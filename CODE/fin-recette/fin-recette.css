@@ -48,11 +48,7 @@
   font-weight: 700;
 }
 
-.recap ol {
-  margin: 12px 0 0;
-  padding-left: 22px;
-}
-
-.recap li + li {
-  margin-top: 6px;
+/* Le contenu du récap (titres, listes) est stylé dans grimoire/grimoire.css */
+#fin-recap {
+  margin-top: 12px;
 }

@@ -1,10 +1,32 @@
 // ==========================================================
-// ACCUEIL : en-tête du joueur + une carte par recette
+// ACCUEIL : en-tête du joueur + menu (Recettes / Grimoire)
+// RECETTES : une carte par recette
 // ==========================================================
+
+// ---------- Accueil (le menu) ----------
 
 function afficherAccueil() {
   afficherEntete();
+  afficherEcran("ecran-accueil");
+}
 
+document.getElementById("menu-recettes").addEventListener("click", afficherRecettes);
+// afficherGrimoire est dans grimoire.js, chargé APRÈS ce fichier : on l'appelle
+// dans une petite fonction () => …, qui ne la cherche qu'au moment du clic
+document.getElementById("menu-grimoire").addEventListener("click", () => afficherGrimoire());
+
+// ---------- Écran Recettes ----------
+
+// Bordure selon le rang de maîtrise : ajoute "maitrise rang-or", etc. à la carte
+function appliquerRang(carte, fois) {
+  const rang = rangDeMaitrise(fois);
+  if (rang) {
+    carte.classList.add("maitrise", "rang-" + rang.nom.toLowerCase());
+    carte.title = "Rang " + rang.nom;
+  }
+}
+
+function afficherRecettes() {
   const niveauJoueur = calculerNiveau(joueur.xp).niveau;
   const grille = document.getElementById("grille-recettes");
   grille.innerHTML = ""; // on vide la grille avant de la remplir
@@ -24,12 +46,7 @@ function afficherAccueil() {
     } else {
       const fois = nombreDeFois(recette.id);
 
-      // Bordure selon le rang de maîtrise : "maitrise rang-or", etc.
-      const rang = rangDeMaitrise(fois);
-      if (rang) {
-        carte.classList.add("maitrise", "rang-" + rang.nom.toLowerCase());
-        carte.title = "Rang " + rang.nom;
-      }
+      appliquerRang(carte, fois);
 
       carte.innerHTML = `
         ${fois === 0 ? '<span class="badge-new">NEW!</span>' : ""}
@@ -45,5 +62,7 @@ function afficherAccueil() {
     grille.appendChild(carte);
   }
 
-  afficherEcran("ecran-accueil");
+  afficherEcran("ecran-recettes");
 }
+
+document.getElementById("recettes-retour").addEventListener("click", afficherAccueil);

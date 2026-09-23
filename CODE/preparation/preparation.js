@@ -48,5 +48,5 @@ function ouvrirPreparation(recette) {
   afficherEcran("ecran-preparation");
 }
 
-document.getElementById("prepa-retour").addEventListener("click", afficherAccueil);
+document.getElementById("prepa-retour").addEventListener("click", afficherRecettes);
 document.getElementById("prepa-commencer").addEventListener("click", () => demarrerCuisine(recetteChoisie));

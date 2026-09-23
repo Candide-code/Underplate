@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="preparation/preparation.css">
   <link rel="stylesheet" href="cuisine/cuisine.css">
   <link rel="stylesheet" href="fin-recette/fin-recette.css">
+  <link rel="stylesheet" href="grimoire/grimoire.css">
 </head>
 <body>
 
@@ -34,9 +35,55 @@
       </div>
     </header>
 
-    <h2 class="titre-section">Tes recettes</h2>
+    <!-- Le menu : on choisit où aller -->
+    <nav class="menu-accueil">
+      <button id="menu-recettes" class="bouton bouton-large bouton-menu">
+        RECETTES ▶
+        <span class="menu-sous-titre">Choisir un plat à cuisiner</span>
+      </button>
+      <button id="menu-grimoire" class="bouton bouton-large bouton-menu">
+        GRIMOIRE ▶
+        <span class="menu-sous-titre">Relire les recettes déjà cuisinées</span>
+      </button>
+    </nav>
+  </main>
+
+  <!-- ===== RECETTES : une carte par recette ===== -->
+  <main id="ecran-recettes" class="ecran" hidden>
+    <div class="barre-haut">
+      <button id="recettes-retour" class="bouton-icone" aria-label="Retour à l'accueil">←</button>
+      <h2>Tes recettes</h2>
+    </div>
     <!-- Les cartes sont créées par accueil.js à partir de la liste des recettes -->
     <section id="grille-recettes" class="grille-recettes"></section>
+  </main>
+
+  <!-- ===== GRIMOIRE : les recettes déjà cuisinées ===== -->
+  <main id="ecran-grimoire" class="ecran" hidden>
+    <div class="barre-haut">
+      <button id="grimoire-retour" class="bouton-icone" aria-label="Retour à l'accueil">←</button>
+      <h2>Grimoire</h2>
+    </div>
+    <p id="grimoire-compte" class="grimoire-compte"></p>
+    <!-- La liste est créée par grimoire.js -->
+    <ul id="liste-grimoire" class="liste-grimoire"></ul>
+  </main>
+
+  <!-- ===== FICHE D'UNE RECETTE (depuis le Grimoire) ===== -->
+  <main id="ecran-fiche" class="ecran" hidden>
+    <div class="barre-haut">
+      <button id="fiche-retour" class="bouton-icone" aria-label="Retour au Grimoire">←</button>
+      <h2 id="fiche-titre"></h2>
+    </div>
+
+    <div class="prepa-resume cadre">
+      <div id="fiche-sprite"></div>
+      <p id="fiche-infos"></p>
+    </div>
+
+    <div id="fiche-recap" class="recap cadre"></div>
+
+    <button id="fiche-cuisiner" class="bouton bouton-large">CUISINER ▶</button>
   </main>
 
   <!-- ===== 2. PRÉPARATION ===== -->
@@ -78,6 +125,7 @@
       <p id="cuisine-texte"></p>
       <p id="cuisine-aide" class="aide" hidden></p>
     </div>
+    <button id="cuisine-precedente" class="bouton-lien">◀ Étape précédente</button>
 
     <!-- Étape "ajouter" : le plateau d'ingrédients -->
     <div id="zone-plateau" class="zone-bas" hidden>
@@ -128,7 +176,7 @@
 
       <details class="recap cadre">
         <summary>Récap de la recette</summary>
-        <ol id="fin-recap"></ol>
+        <div id="fin-recap"></div>
       </details>
 
       <button id="fin-retour" class="bouton bouton-large">RETOUR ▶</button>
@@ -146,6 +194,7 @@
   <script src="preparation/preparation.js"></script>
   <script src="cuisine/cuisine.js"></script>
   <script src="fin-recette/fin-recette.js"></script>
+  <script src="grimoire/grimoire.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

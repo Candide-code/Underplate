@@ -1,0 +1,83 @@
+/* ==========================================================
+   GRIMOIRE : liste des recettes, fiche et récap
+   ========================================================== */
+
+/* ---------- Écran Grimoire ---------- */
+.grimoire-compte {
+  margin: 0 0 16px;
+  color: var(--texte-2);
+}
+
+/* La liste : une ligne par recette, comme une table des matières */
+.liste-grimoire {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.liste-grimoire li + li {
+  margin-top: 12px;
+}
+
+.ligne-grimoire {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  text-align: left;
+  font-family: var(--police-titre);
+  font-size: 12px;
+  background: var(--boite);
+  color: var(--texte);
+  border: var(--pixel) solid var(--texte);
+  box-shadow: var(--pixel) var(--pixel) 0 var(--texte);
+  cursor: pointer;
+}
+
+.ligne-grimoire:not(:disabled)::after {
+  content: " ▶";
+  float: right;
+}
+
+.ligne-grimoire:not(:disabled):active {
+  transform: translate(var(--pixel), var(--pixel));
+  box-shadow: none;
+}
+
+/* Recette jamais cuisinée : ligne en pointillés, comme une page vierge */
+.ligne-grimoire:disabled {
+  background: var(--fond);
+  color: var(--texte-2);
+  border-style: dashed;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* ---------- Récap d'une recette (fiche du Grimoire + écran de fin) ---------- */
+
+/* Petits titres "Ingrédients", "Ustensiles", "Étapes" */
+.recap h4 {
+  margin: 16px 0 0;
+  font-family: var(--police-titre);
+  font-size: 10px;
+  font-weight: normal;
+  color: var(--texte-2);
+}
+
+.recap h4:first-child {
+  margin-top: 0;
+}
+
+.recap ul,
+.recap ol {
+  margin: 8px 0 0;
+  padding-left: 22px;
+}
+
+.recap li + li {
+  margin-top: 6px;
+}
+
+/* La fiche : un peu d'espace entre le résumé et le récap */
+#fiche-recap {
+  margin-top: 20px;
+}

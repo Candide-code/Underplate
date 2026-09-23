@@ -25,6 +25,23 @@
   color: var(--texte-2);
 }
 
+/* ---------- Menu de l'accueil : RECETTES / GRIMOIRE ---------- */
+.menu-accueil {
+  margin-top: 28px;
+}
+
+.bouton-menu {
+  text-align: left;
+  padding: 20px;
+}
+
+.menu-sous-titre {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--police-texte);
+  font-size: 16px;
+}
+
 /* ---------- Grille des recettes ---------- */
 
 /* 2 colonnes sur téléphone, 3 si l'écran est plus large */

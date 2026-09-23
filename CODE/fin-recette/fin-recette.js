@@ -66,9 +66,8 @@ document.getElementById("fin-jai-fini").addEventListener("click", () => {
   }
   document.getElementById("fin-dialogue").innerHTML = lignes.map(l => `<p>${l}</p>`).join("");
 
-  // 4. Récap de la recette pour la refaire
-  document.getElementById("fin-recap").innerHTML =
-    recette.etapes.map(e => `<li>${e.texte}</li>`).join("");
+  // 4. Récap de la recette pour la refaire (même contenu que la fiche du Grimoire)
+  document.getElementById("fin-recap").innerHTML = htmlRecap(recette);
 
   document.getElementById("fin-jai-fini").hidden = true;
   document.getElementById("fin-resultats").hidden = false;

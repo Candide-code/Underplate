@@ -11,6 +11,7 @@ const cuisine = {
   indexEtape: 0,
   erreurs: 0,          // erreurs sur l'étape en cours
   taps: 0,             // taps sur l'étape "action" en cours
+  pause: null,         // la courte pause après une étape "action" (pour pouvoir l'annuler)
   minuteur: null,      // l'intervalle du minuteur (pour pouvoir l'arrêter)
   secondesRestantes: 0,
   heureFin: 0          // quand la cuisson se termine (en millisecondes, voir Date.now())
@@ -25,7 +26,6 @@ function etapeActuelle() {
 function demarrerCuisine(recette) {
   cuisine.recette = recette;
   cuisine.indexEtape = 0;
-  document.getElementById("cuisine-contenu").innerHTML = "";
   preparerPlateau(recette);
   afficherEtape();
   afficherEcran("ecran-cuisine");
@@ -45,18 +45,19 @@ document.getElementById("quitter-non").addEventListener("click", () => {
   fenetreQuitter.close();
 });
 
-// "Quitter la recette" : on arrête tout et on revient à l'accueil
+// "Quitter la recette" : on arrête tout et on revient à la liste des recettes
 document.getElementById("quitter-oui").addEventListener("click", () => {
   fenetreQuitter.close();
   arreterMinuteur();
   laisserEcranSEteindre();
-  afficherAccueil();
+  afficherRecettes();
 });
 
 // ---------- Afficher l'étape en cours ----------
 
 function afficherEtape() {
   arreterMinuteur();
+  clearTimeout(cuisine.pause); // annule un passage automatique en attente (étape "action")
   const etapes = cuisine.recette.etapes;
   const etape = etapeActuelle();
   cuisine.erreurs = 0;
@@ -79,14 +80,13 @@ function afficherEtape() {
   }
   document.getElementById("cuisine-pastilles").innerHTML = pastilles;
 
-  // Si on change d'ustensile (bol → poêle), on vide le contenu affiché
-  const precedente = etapes[cuisine.indexEtape - 1];
-  if (precedente && precedente.ustensile !== etape.ustensile) {
-    document.getElementById("cuisine-contenu").innerHTML = "";
-  }
   const ustensile = ustensiles[etape.ustensile];
   document.getElementById("cuisine-ustensile").innerHTML =
     htmlSprite(ustensile.sprite, ustensile.nom, ustensile.nom);
+  afficherContenu();
+
+  // Pas d'étape précédente à la 1re étape
+  document.getElementById("cuisine-precedente").hidden = cuisine.indexEtape === 0;
 
   // Texte de l'étape dans la boîte de dialogue
   document.getElementById("cuisine-texte").textContent = "* " + etape.texte;
@@ -100,6 +100,38 @@ function afficherEtape() {
   if (etape.type === "action") preparerAction(etape);
   if (etape.type === "cuisson") preparerCuisson(etape);
 }
+
+// Ce qu'il y a dans l'ustensile : les ingrédients ajoutés depuis qu'on
+// utilise cet ustensile. On le recalcule à chaque étape à partir de la
+// recette, comme ça il est juste aussi quand on revient en arrière.
+function afficherContenu() {
+  const etapes = cuisine.recette.etapes;
+  const ustensileActuel = etapeActuelle().ustensile;
+
+  // On remonte jusqu'à la 1re étape qui utilise ce même ustensile
+  let debut = cuisine.indexEtape;
+  while (debut > 0 && etapes[debut - 1].ustensile === ustensileActuel) {
+    debut--;
+  }
+
+  // Puis on affiche chaque ingrédient ajouté entre cette étape et maintenant
+  let html = "";
+  for (let i = debut; i < cuisine.indexEtape; i++) {
+    if (etapes[i].type === "ajouter") {
+      const ingredient = ingredients[etapes[i].ingredient];
+      html += htmlSprite(ingredient.sprite, ingredient.nom[0], ingredient.nom);
+    }
+  }
+  document.getElementById("cuisine-contenu").innerHTML = html;
+}
+
+function etapePrecedente() {
+  if (cuisine.indexEtape === 0) return;
+  cuisine.indexEtape--;
+  afficherEtape();
+}
+
+document.getElementById("cuisine-precedente").addEventListener("click", etapePrecedente);
 
 function etapeSuivante() {
   cuisine.indexEtape++;
@@ -135,10 +167,7 @@ function choisirIngredient(id, bouton) {
   const etape = etapeActuelle();
 
   if (id === etape.ingredient) {
-    // Bon ingrédient : il apparaît dans l'ustensile, et on passe à la suite
-    const ingredient = ingredients[id];
-    document.getElementById("cuisine-contenu").innerHTML +=
-      htmlSprite(ingredient.sprite, ingredient.nom[0], ingredient.nom);
+    // Bon ingrédient : on passe à la suite (afficherContenu le montrera dans l'ustensile)
     etapeSuivante();
     return;
   }
@@ -172,7 +201,9 @@ document.getElementById("action-bouton").addEventListener("click", () => {
   faireTrembler(document.getElementById("cuisine-scene"));
 
   if (cuisine.taps >= etape.fois) {
-    setTimeout(etapeSuivante, 300); // petite pause pour voir la jauge pleine
+    // Petite pause pour voir la jauge pleine. On garde la pause dans
+    // cuisine.pause pour pouvoir l'annuler si on revient en arrière entre-temps.
+    cuisine.pause = setTimeout(etapeSuivante, 300);
   }
 });
 
