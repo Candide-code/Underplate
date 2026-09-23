@@ -15,6 +15,12 @@
   --reussite: #38b764;
   --erreur: #b13e53;
 
+  /* Rangs de maîtrise des recettes */
+  --bronze: #c77b3f; /* hors Sweetie 16 */
+  --argent: #94b0c2;
+  --or: #ffcd75;
+  --platine: #73eff7;
+
   --police-titre: "Press Start 2P", monospace;
   --police-texte: "Pixelify Sans", monospace;
 

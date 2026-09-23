@@ -51,6 +51,9 @@
   font: inherit;      /* un bouton n'hérite pas de la police par défaut */
   color: inherit;
   cursor: pointer;
+  /* Même marge pour toutes les cartes, avec ou sans rang de maîtrise :
+     12 px d'air + la place de la double bordure (liseré + espace + liseré) */
+  padding: calc(12px + var(--pixel) * 3);
 }
 
 .carte-recette:not(.verrouillee):active {
@@ -63,6 +66,7 @@
 }
 
 .carte-infos {
+  margin-top: auto; /* prend l'espace libre au-dessus : la ligne ★ / ✓ reste en bas de la carte */
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -89,6 +93,142 @@
   font-family: var(--police-titre);
   font-size: 8px;
   padding: 4px 6px;
+}
+
+/* ---------- Rangs de maîtrise : la bordure s'enrichit à chaque rang ----------
+   Le cadre sombre reste, et on ajoute par-dessus :
+   Bronze  → un liseré de couleur à l'intérieur
+   Argent  → + 4 coins en pixel (::before)
+   Or      → + un 2e liseré (double bordure) et 2 petites gemmes
+   Platine → + 2 grandes gemmes et des reflets (cadre orné) */
+.rang-bronze  { --rang: var(--bronze); }
+.rang-argent  { --rang: var(--argent); }
+.rang-or      { --rang: var(--or); }
+.rang-platine { --rang: var(--platine); }
+
+/* Le liseré de couleur, posé sur la carte sans gêner le clic */
+.carte-recette.maitrise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: var(--pixel) solid var(--rang);
+  pointer-events: none;
+}
+
+/* Les 4 coins : un carré de couleur dessiné dans chaque angle */
+.rang-argent::before,
+.rang-or::before,
+.rang-platine::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--pixel) * -2); /* déborde un peu du cadre */
+  --coin: linear-gradient(var(--rang), var(--rang));
+  background:
+    var(--coin) top left     / calc(var(--pixel) * 3) calc(var(--pixel) * 3) no-repeat,
+    var(--coin) top right    / calc(var(--pixel) * 3) calc(var(--pixel) * 3) no-repeat,
+    var(--coin) bottom left  / calc(var(--pixel) * 3) calc(var(--pixel) * 3) no-repeat,
+    var(--coin) bottom right / calc(var(--pixel) * 3) calc(var(--pixel) * 3) no-repeat;
+  pointer-events: none;
+}
+
+/* Double bordure : un espace couleur carte, puis un 2e liseré */
+.rang-or::after,
+.rang-platine::after {
+  box-shadow:
+    inset 0 0 0 var(--pixel) var(--boite),
+    inset 0 0 0 calc(var(--pixel) * 2) var(--rang);
+}
+
+/* Or : une petite gemme au milieu du haut et du bas, sans reflet
+   (version réduite de celle du Platine, voir juste en dessous)
+       contour : 1, 3, 5, 3, 1 pixels de large
+       pierre  :    1, 3, 1    pixels de large, par-dessus */
+.rang-or::before {
+  z-index: 1; /* au-dessus des liserés (::after) */
+  --p: var(--pixel);
+  --contour: linear-gradient(var(--texte), var(--texte));
+  background:
+    /* pierre de la gemme du haut */
+    var(--coin) 50% calc(var(--p) * 2)             / var(--p) var(--p) no-repeat,
+    var(--coin) 50% calc(var(--p) * 3)             / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--coin) 50% calc(var(--p) * 4)             / var(--p) var(--p) no-repeat,
+    /* contour de la gemme du haut */
+    var(--contour) 50% var(--p)                    / var(--p) var(--p) no-repeat,
+    var(--contour) 50% calc(var(--p) * 2)          / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--contour) 50% calc(var(--p) * 3)          / calc(var(--p) * 5) var(--p) no-repeat,
+    var(--contour) 50% calc(var(--p) * 4)          / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--contour) 50% calc(var(--p) * 5)          / var(--p) var(--p) no-repeat,
+    /* pierre de la gemme du bas */
+    var(--coin) 50% calc(100% - var(--p) * 2)      / var(--p) var(--p) no-repeat,
+    var(--coin) 50% calc(100% - var(--p) * 3)      / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--coin) 50% calc(100% - var(--p) * 4)      / var(--p) var(--p) no-repeat,
+    /* contour de la gemme du bas */
+    var(--contour) 50% calc(100% - var(--p))       / var(--p) var(--p) no-repeat,
+    var(--contour) 50% calc(100% - var(--p) * 2)   / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--contour) 50% calc(100% - var(--p) * 3)   / calc(var(--p) * 5) var(--p) no-repeat,
+    var(--contour) 50% calc(100% - var(--p) * 4)   / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--contour) 50% calc(100% - var(--p) * 5)   / var(--p) var(--p) no-repeat,
+    /* les 4 coins, comme pour Argent */
+    var(--coin) top left     / calc(var(--p) * 3) calc(var(--p) * 3) no-repeat,
+    var(--coin) top right    / calc(var(--p) * 3) calc(var(--p) * 3) no-repeat,
+    var(--coin) bottom left  / calc(var(--p) * 3) calc(var(--p) * 3) no-repeat,
+    var(--coin) bottom right / calc(var(--p) * 3) calc(var(--p) * 3) no-repeat;
+}
+
+/* Platine : cadre orné, façon bijou
+   - une gemme en losange au milieu du haut et du bas, posée sur la double
+     bordure. Elle est dessinée ligne par ligne :
+       contour : 1, 3, 5, 7, 5, 3, 1 pixels de large (couleur du cadre)
+       pierre  :    1, 3, 5, 3, 1    pixels de large, par-dessus
+   - un reflet blanc en haut à gauche de chaque gemme et de chaque coin
+   (le 1er dégradé de la liste est dessiné par-dessus les suivants) */
+.rang-platine::before {
+  z-index: 1; /* au-dessus des liserés (::after), sinon ils cachent les gemmes */
+  --p: var(--pixel);
+  --reflet: linear-gradient(#f4f4f4, #f4f4f4);
+  --contour: linear-gradient(var(--texte), var(--texte));
+  background:
+    /* reflets des gemmes */
+    var(--reflet) calc(50% - var(--p)) calc(var(--p) * 2)        / var(--p) var(--p) no-repeat,
+    var(--reflet) calc(50% - var(--p)) calc(100% - var(--p) * 4) / var(--p) var(--p) no-repeat,
+    /* reflets des coins */
+    var(--reflet) left 0 top 0                                  / var(--p) var(--p) no-repeat,
+    var(--reflet) right calc(var(--p) * 2) top 0                / var(--p) var(--p) no-repeat,
+    var(--reflet) left 0 bottom calc(var(--p) * 2)              / var(--p) var(--p) no-repeat,
+    var(--reflet) right calc(var(--p) * 2) bottom calc(var(--p) * 2) / var(--p) var(--p) no-repeat,
+    /* pierre de la gemme du haut */
+    var(--coin) 50% var(--p)                       / var(--p) var(--p) no-repeat,
+    var(--coin) 50% calc(var(--p) * 2)             / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--coin) 50% calc(var(--p) * 3)             / calc(var(--p) * 5) var(--p) no-repeat,
+    var(--coin) 50% calc(var(--p) * 4)             / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--coin) 50% calc(var(--p) * 5)             / var(--p) var(--p) no-repeat,
+    /* contour de la gemme du haut */
+    var(--contour) 50% 0                           / var(--p) var(--p) no-repeat,
+    var(--contour) 50% var(--p)                    / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--contour) 50% calc(var(--p) * 2)          / calc(var(--p) * 5) var(--p) no-repeat,
+    var(--contour) 50% calc(var(--p) * 3)          / calc(var(--p) * 7) var(--p) no-repeat,
+    var(--contour) 50% calc(var(--p) * 4)          / calc(var(--p) * 5) var(--p) no-repeat,
+    var(--contour) 50% calc(var(--p) * 5)          / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--contour) 50% calc(var(--p) * 6)          / var(--p) var(--p) no-repeat,
+    /* pierre de la gemme du bas */
+    var(--coin) 50% calc(100% - var(--p))          / var(--p) var(--p) no-repeat,
+    var(--coin) 50% calc(100% - var(--p) * 2)      / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--coin) 50% calc(100% - var(--p) * 3)      / calc(var(--p) * 5) var(--p) no-repeat,
+    var(--coin) 50% calc(100% - var(--p) * 4)      / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--coin) 50% calc(100% - var(--p) * 5)      / var(--p) var(--p) no-repeat,
+    /* contour de la gemme du bas */
+    var(--contour) 50% 100%                        / var(--p) var(--p) no-repeat,
+    var(--contour) 50% calc(100% - var(--p))       / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--contour) 50% calc(100% - var(--p) * 2)   / calc(var(--p) * 5) var(--p) no-repeat,
+    var(--contour) 50% calc(100% - var(--p) * 3)   / calc(var(--p) * 7) var(--p) no-repeat,
+    var(--contour) 50% calc(100% - var(--p) * 4)   / calc(var(--p) * 5) var(--p) no-repeat,
+    var(--contour) 50% calc(100% - var(--p) * 5)   / calc(var(--p) * 3) var(--p) no-repeat,
+    var(--contour) 50% calc(100% - var(--p) * 6)   / var(--p) var(--p) no-repeat,
+    /* les 4 coins, comme pour Argent et Or */
+    var(--coin) top left     / calc(var(--p) * 3) calc(var(--p) * 3) no-repeat,
+    var(--coin) top right    / calc(var(--p) * 3) calc(var(--p) * 3) no-repeat,
+    var(--coin) bottom left  / calc(var(--p) * 3) calc(var(--p) * 3) no-repeat,
+    var(--coin) bottom right / calc(var(--p) * 3) calc(var(--p) * 3) no-repeat;
 }
 
 /* ---------- Recette verrouillée ---------- */

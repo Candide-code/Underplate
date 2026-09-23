@@ -21,17 +21,23 @@ document.getElementById("fin-jai-fini").addEventListener("click", () => {
 
   // 1. On calcule et on ajoute l'XP
   const avant = calculerNiveau(joueur.xp);
-  const dejaFaite = nombreDeFois(recette.id) > 0;
-  const gain = calculerXpGagnee(recette, avant.niveau, dejaFaite);
+  const foisAvant = nombreDeFois(recette.id);
+  const gain = calculerXpGagnee(recette, avant.niveau, foisAvant);
 
   joueur.xp += gain;
-  joueur.recettesFaites[recette.id] = nombreDeFois(recette.id) + 1;
+  joueur.recettesFaites[recette.id] = foisAvant + 1;
   sauvegarder();
 
   const apres = calculerNiveau(joueur.xp);
+  const rangAvant = rangDeMaitrise(foisAvant);
+  const rangApres = rangDeMaitrise(foisAvant + 1);
 
-  // 2. XP gagnée + barre (elle se remplit grâce à la transition CSS)
-  document.getElementById("fin-gain").textContent = "+" + gain + " XP" + (dejaFaite ? "" : " (découverte ×1,5)");
+  // 2. XP gagnée (avec le détail des bonus) + barre qui se remplit grâce à la transition CSS
+  const bonus = [];
+  if (foisAvant === 0) bonus.push("découverte ×1,5");
+  if (rangAvant) bonus.push("rang " + rangAvant.nom + " +" + pourcentageBonus(rangAvant) + " %");
+  document.getElementById("fin-gain").textContent =
+    "+" + gain + " XP" + (bonus.length > 0 ? " (" + bonus.join(", ") + ")" : "");
   const barre = document.getElementById("fin-barre");
   barre.style.width = "0%";
   setTimeout(() => {
@@ -53,6 +59,10 @@ document.getElementById("fin-jai-fini").addEventListener("click", () => {
     const manque = apres.xpNecessaire - apres.xpDansNiveau;
     lignes.push("* Bien joué, chef !");
     lignes.push("* Plus que " + manque + " XP avant le niveau " + (apres.niveau + 1) + ".");
+  }
+  if (rangApres !== rangAvant) {
+    lignes.push("* " + recette.nom + " maîtrisée : rang " + rangApres.nom + " !");
+    lignes.push("* Bonus sur cette recette : +" + pourcentageBonus(rangApres) + " % d'XP.");
   }
   document.getElementById("fin-dialogue").innerHTML = lignes.map(l => `<p>${l}</p>`).join("");
 

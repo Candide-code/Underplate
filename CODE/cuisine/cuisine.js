@@ -28,10 +28,12 @@ function demarrerCuisine(recette) {
   preparerPlateau(recette);
   afficherEtape();
   afficherEcran("ecran-cuisine");
+  garderEcranAllume(); // l'écran reste allumé pendant toute la recette
 }
 
 document.getElementById("cuisine-quitter").addEventListener("click", () => {
   arreterMinuteur();
+  laisserEcranSEteindre();
   afficherAccueil();
 });
 
@@ -81,6 +83,7 @@ function afficherEtape() {
 function etapeSuivante() {
   cuisine.indexEtape++;
   if (cuisine.indexEtape >= cuisine.recette.etapes.length) {
+    laisserEcranSEteindre(); // la cuisine est finie, le téléphone peut se mettre en veille
     terminerRecette(cuisine.recette);
   } else {
     afficherEtape();

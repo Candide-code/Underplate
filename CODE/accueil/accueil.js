@@ -23,6 +23,14 @@ function afficherAccueil() {
         <div class="carte-infos"><span>🔒</span><span>Niv. ${recette.niveauRequis}</span></div>`;
     } else {
       const fois = nombreDeFois(recette.id);
+
+      // Bordure selon le rang de maîtrise : "maitrise rang-or", etc.
+      const rang = rangDeMaitrise(fois);
+      if (rang) {
+        carte.classList.add("maitrise", "rang-" + rang.nom.toLowerCase());
+        carte.title = "Rang " + rang.nom;
+      }
+
       carte.innerHTML = `
         ${fois === 0 ? '<span class="badge-new">NEW!</span>' : ""}
         ${htmlSprite(recette.sprite, recette.initiale, recette.nom)}

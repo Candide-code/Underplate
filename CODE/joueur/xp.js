@@ -44,9 +44,38 @@ function bonusEcart(niveauJoueur, niveauRecette) {
   return 0.25;
 }
 
-// XP gagnée en finissant une recette
-function calculerXpGagnee(recette, niveauJoueur, dejaFaite) {
+// Rangs de maîtrise d'une recette : plus on la refait, plus elle rapporte
+const RANGS = [
+  { nom: "Bronze",  fois: 1,  bonus: 1.05 }, // +5 %
+  { nom: "Argent",  fois: 5,  bonus: 1.10 }, // +10 %
+  { nom: "Or",      fois: 10, bonus: 1.25 }, // +25 %
+  { nom: "Platine", fois: 20, bonus: 1.50 }  // +50 %
+];
+
+// Rang atteint après avoir fait la recette "fois" fois (null si jamais faite)
+function rangDeMaitrise(fois) {
+  let rang = null;
+  for (const r of RANGS) {
+    if (fois >= r.fois) rang = r;
+  }
+  return rang;
+}
+
+// Prochain rang à atteindre (null si on est déjà Platine)
+function rangSuivant(fois) {
+  return RANGS.find(r => fois < r.fois) || null;
+}
+
+// Bonus d'un rang en pourcentage : 1.25 → 25
+function pourcentageBonus(rang) {
+  return Math.round((rang.bonus - 1) * 100);
+}
+
+// XP gagnée en finissant une recette déjà faite "fois" fois
+function calculerXpGagnee(recette, niveauJoueur, fois) {
   const base = XP_PAR_DIFFICULTE[recette.difficulte];
-  const decouverte = dejaFaite ? 1 : 1.5; // bonus découverte ×1,5 la 1re fois
-  return Math.round(base * decouverte * bonusEcart(niveauJoueur, recette.niveauRequis));
+  const decouverte = fois === 0 ? 1.5 : 1; // bonus découverte ×1,5 la 1re fois
+  const rang = rangDeMaitrise(fois);
+  const maitrise = rang ? rang.bonus : 1;  // bonus du rang déjà atteint
+  return Math.round(base * decouverte * bonusEcart(niveauJoueur, recette.niveauRequis) * maitrise);
 }

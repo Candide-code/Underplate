@@ -8,14 +8,22 @@ function ouvrirPreparation(recette) {
   recetteChoisie = recette;
 
   const niveauJoueur = calculerNiveau(joueur.xp).niveau;
-  const dejaFaite = nombreDeFois(recette.id) > 0;
-  const xp = calculerXpGagnee(recette, niveauJoueur, dejaFaite);
+  const fois = nombreDeFois(recette.id);
+  const xp = calculerXpGagnee(recette, niveauJoueur, fois);
+
+  // Rang de maîtrise actuel et objectif suivant
+  const rang = rangDeMaitrise(fois);
+  const suivant = rangSuivant(fois);
+  let texteRang = rang ? "Rang " + rang.nom + " (+" + pourcentageBonus(rang) + " % XP)" : "Pas encore de rang";
+  if (suivant) {
+    texteRang += " · " + fois + "/" + suivant.fois + " vers " + suivant.nom;
+  }
 
   document.getElementById("prepa-titre").textContent = recette.nom;
   document.getElementById("prepa-sprite").innerHTML =
     htmlSprite(recette.sprite, recette.initiale, recette.nom);
-  document.getElementById("prepa-infos").textContent =
-    "★".repeat(recette.difficulte) + " · " + recette.temps + " min · +" + xp + " XP";
+  document.getElementById("prepa-infos").innerHTML =
+    "★".repeat(recette.difficulte) + " · " + recette.temps + " min · +" + xp + " XP<br>" + texteRang;
 
   // Ingrédients : une case à cocher par ingrédient, avec sa quantité
   const listeIngredients = document.getElementById("prepa-ingredients");
