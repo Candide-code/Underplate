@@ -12,7 +12,8 @@ const cuisine = {
   erreurs: 0,          // erreurs sur l'étape en cours
   taps: 0,             // taps sur l'étape "action" en cours
   minuteur: null,      // l'intervalle du minuteur (pour pouvoir l'arrêter)
-  secondesRestantes: 0
+  secondesRestantes: 0,
+  heureFin: 0          // quand la cuisson se termine (en millisecondes, voir Date.now())
 };
 
 function etapeActuelle() {
@@ -31,7 +32,22 @@ function demarrerCuisine(recette) {
   garderEcranAllume(); // l'écran reste allumé pendant toute la recette
 }
 
+// ✕ ne quitte pas tout de suite : on demande confirmation.
+// showModal() ouvre la <dialog> par-dessus l'écran ; close() la ferme.
+const fenetreQuitter = document.getElementById("confirmer-quitter");
+
 document.getElementById("cuisine-quitter").addEventListener("click", () => {
+  fenetreQuitter.showModal();
+});
+
+// "Continuer" : on ferme la fenêtre, la recette reprend où elle en était
+document.getElementById("quitter-non").addEventListener("click", () => {
+  fenetreQuitter.close();
+});
+
+// "Quitter la recette" : on arrête tout et on revient à l'accueil
+document.getElementById("quitter-oui").addEventListener("click", () => {
+  fenetreQuitter.close();
   arreterMinuteur();
   laisserEcranSEteindre();
   afficherAccueil();
@@ -45,6 +61,11 @@ function afficherEtape() {
   const etape = etapeActuelle();
   cuisine.erreurs = 0;
   cuisine.taps = 0;
+
+  // Nouvelle étape : on efface les encadrés rouges des erreurs précédentes
+  for (const bouton of document.querySelectorAll(".case-ingredient.erreur")) {
+    bouton.classList.remove("erreur");
+  }
 
   // Progression : "Étape 3/10" + une pastille par étape
   document.getElementById("cuisine-progression").textContent =
@@ -124,6 +145,7 @@ function choisirIngredient(id, bouton) {
 
   // Mauvais ingrédient : pas de pénalité, juste un petit signal
   cuisine.erreurs++;
+  bouton.classList.add("erreur"); // encadré rouge jusqu'à la fin de l'étape
   faireTrembler(bouton);
   faireTrembler(document.getElementById("ecran-cuisine"));
   vibrer(150);
@@ -179,20 +201,41 @@ function arreterMinuteur() {
 
 document.getElementById("minuteur-lancer").addEventListener("click", () => {
   document.getElementById("minuteur-lancer").hidden = true;
+  preparerSon(); // on profite du clic pour autoriser le bip de fin
 
-  // setInterval exécute la fonction toutes les 1000 ms (= 1 seconde)
-  cuisine.minuteur = setInterval(() => {
-    cuisine.secondesRestantes--;
-    afficherMinuteur();
+  // On ne compte pas les secondes une par une : on retient l'heure de fin.
+  // Date.now() = l'heure actuelle en millisecondes (1 s = 1000 ms).
+  cuisine.heureFin = Date.now() + cuisine.secondesRestantes * 1000;
 
-    if (cuisine.secondesRestantes <= 0) {
-      arreterMinuteur();
-      vibrer([200, 100, 200]);
-      document.getElementById("cuisine-texte").textContent = "* C'est prêt !";
-      document.getElementById("minuteur-suivant").hidden = false;
-      document.getElementById("minuteur-passer").hidden = true;
-    }
-  }, 1000);
+  // setInterval exécute la fonction toutes les 250 ms (4 fois par seconde,
+  // pour que l'affichage change pile au bon moment)
+  cuisine.minuteur = setInterval(mettreAJourMinuteur, 250);
+});
+
+// Temps restant = heure de fin − heure actuelle.
+// Même si le navigateur a sauté des "tics" (appli en arrière-plan),
+// le calcul reste juste car l'horloge du téléphone, elle, ne s'arrête jamais.
+function mettreAJourMinuteur() {
+  const millisecondesRestantes = cuisine.heureFin - Date.now();
+  cuisine.secondesRestantes = Math.max(0, Math.ceil(millisecondesRestantes / 1000));
+  afficherMinuteur();
+
+  if (cuisine.secondesRestantes <= 0) {
+    arreterMinuteur();
+    jouerBip();
+    vibrer([200, 100, 200]);
+    document.getElementById("cuisine-texte").textContent = "* C'est prêt !";
+    document.getElementById("minuteur-suivant").hidden = false;
+    document.getElementById("minuteur-passer").hidden = true;
+  }
+}
+
+// Quand on revient sur la page, on met le minuteur à jour tout de suite
+// (sans attendre le prochain "tic")
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && cuisine.minuteur) {
+    mettreAJourMinuteur();
+  }
 });
 
 document.getElementById("minuteur-suivant").addEventListener("click", etapeSuivante);

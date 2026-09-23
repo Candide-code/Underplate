@@ -103,7 +103,8 @@
   font-size: 16px;
 }
 
-.case-ingredient.tremble {
+/* Mauvais ingrédient : encadré rouge, effacé à l'étape suivante */
+.case-ingredient.erreur {
   border-color: var(--erreur);
 }
 
@@ -113,4 +114,24 @@
   text-align: center;
   font-family: var(--police-titre);
   font-size: 40px;
+}
+
+/* Fenêtre de confirmation "Quitter ?" (balise <dialog>) */
+.fenetre {
+  width: calc(100% - 32px);
+  max-width: 360px;
+}
+
+.fenetre p + p {
+  margin-top: 8px;
+}
+
+/* Le fond derrière la fenêtre est assombri */
+.fenetre::backdrop {
+  background: rgba(26, 28, 44, 0.75);
+}
+
+/* Lien "Quitter la recette" lisible sur la boîte sombre */
+.fenetre .bouton-lien {
+  color: #94b0c2;
 }
