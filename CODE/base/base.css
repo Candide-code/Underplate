@@ -1,3 +1,140 @@
+/* ==========================================================
+   BASE : police, couleurs, thèmes et éléments pixel communs
+   ========================================================== */
+
+/* ---------- 1. Les variables (thème clair par défaut) ----------
+   Une variable CSS se déclare avec -- et s'utilise avec var(--nom).
+   Palette : Sweetie 16 (lospec.com) */
+:root {
+  --fond: #f4f4f4;
+  --boite: #94b0c2;
+  --texte: #1a1c2c;
+  --texte-2: #566c86;
+  --accent: #ef7d57;
+  --xp: #ffcd75;
+  --reussite: #38b764;
+  --erreur: #b13e53;
+
+  --police-titre: "Press Start 2P", monospace;
+  --police-texte: "Pixelify Sans", monospace;
+
+  --pixel: 4px; /* épaisseur des bordures et des ombres */
+}
+
+/* ---------- 2. Le thème sombre ----------
+   Si le téléphone est réglé en mode sombre, on remplace les couleurs.
+   Tout le reste du CSS utilise les variables, donc tout suit. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fond: #1a1c2c;
+    --boite: #333c57;
+    --texte: #f4f4f4;
+    --texte-2: #94b0c2;
+    --reussite: #a7f070;
+  }
+}
+
+/* ---------- 3. La page ---------- */
+* {
+  box-sizing: border-box; /* la bordure est comprise dans la largeur */
+}
+
 body {
-  font-family: sans-serif;
+  margin: 0;
+  padding: 16px;
+  background: var(--fond);
+  color: var(--texte);
+  font-family: var(--police-texte);
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+h1, h2, h3 {
+  font-family: var(--police-titre);
+  font-weight: normal;
+  line-height: 1.5;
+}
+
+h1 { font-size: 20px; }
+h2 { font-size: 16px; }
+h3 { font-size: 12px; }
+
+/* Les sprites restent nets quand on les agrandit */
+img {
+  image-rendering: pixelated;
+}
+
+/* ---------- 4. Les éléments pixel réutilisables ---------- */
+
+/* Cadre façon RPG : bordure épaisse et ombre dure, sans arrondi */
+.cadre {
+  background: var(--boite);
+  border: var(--pixel) solid var(--texte);
+  box-shadow: var(--pixel) var(--pixel) 0 var(--texte);
+  padding: 12px;
+}
+
+/* Boîte de dialogue façon Undertale : toujours sombre, dans les deux thèmes */
+.dialogue {
+  background: #1a1c2c;
+  color: #f4f4f4;
+  border: var(--pixel) solid #f4f4f4;
+  outline: var(--pixel) solid #1a1c2c; /* liseré sombre autour, visible en thème clair */
+  padding: 16px;
+}
+
+.dialogue p {
+  margin: 0;
+}
+
+/* Bouton pixel : il "s'enfonce" quand on appuie */
+.bouton {
+  font-family: var(--police-titre);
+  font-size: 12px;
+  background: var(--accent);
+  color: #1a1c2c;
+  border: var(--pixel) solid var(--texte);
+  box-shadow: var(--pixel) var(--pixel) 0 var(--texte);
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.bouton:active {
+  transform: translate(var(--pixel), var(--pixel));
+  box-shadow: none;
+}
+
+.bouton:focus-visible {
+  outline: var(--pixel) dashed var(--accent);
+  outline-offset: var(--pixel);
+}
+
+/* Sprite affiché en 32×32 agrandi ×2 */
+.sprite {
+  width: 64px;
+  height: 64px;
+}
+
+/* Sprite temporaire : un carré de couleur avec l'initiale,
+   en attendant le vrai dessin. Exemple : <span class="sprite sprite-temp">O</span> */
+.sprite-temp {
+  display: inline-grid;
+  place-items: center;
+  background: var(--xp);
+  color: #1a1c2c;
+  border: var(--pixel) solid var(--texte);
+  font-family: var(--police-titre);
+  font-size: 20px;
+}
+
+/* Barre d'XP */
+.barre-xp {
+  height: 16px;
+  background: var(--fond);
+  border: var(--pixel) solid var(--texte);
+}
+
+.barre-xp-remplissage {
+  height: 100%;
+  background: var(--xp);
 }

@@ -5,12 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Petit Chef</title>
 
+  <!-- Polices pixel (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;700&display=swap">
+
   <!-- Styles : d'abord la base, puis chaque fonctionnalité -->
   <link rel="stylesheet" href="base/base.css">
 </head>
 <body>
+  <!-- Page de test du style pixel (sera remplacée à l'étape 4) -->
   <h1>Petit Chef</h1>
-  <p>Le projet démarre !</p>
+
+  <div class="cadre">
+    <h2>Niv. 3 - Cuistot</h2>
+    <div class="barre-xp">
+      <div class="barre-xp-remplissage" style="width: 70%"></div>
+    </div>
+    <p>78 / 109 XP</p>
+  </div>
+
+  <br>
+
+  <div class="dialogue">
+    <p>* Casse 2 oeufs dans la poêle.</p>
+  </div>
+
+  <br>
+
+  <button class="bouton">COMMENCER ▶</button>
 
   <!-- Scripts : chaque fonctionnalité, puis main.js en dernier -->
   <script src="main.js"></script>
