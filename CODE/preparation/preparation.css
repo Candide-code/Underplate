@@ -1,0 +1,54 @@
+/* ==========================================================
+   PRÉPARATION : ingrédients et ustensiles à cocher
+   ========================================================== */
+
+.prepa-resume {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.prepa-resume p {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Liste à cocher */
+.liste-a-cocher {
+  list-style: none;
+  margin: 0;
+  padding: 8px 12px;
+}
+
+.liste-a-cocher li + li {
+  border-top: 2px dashed var(--texte-2);
+}
+
+.liste-a-cocher label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.liste-a-cocher input {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--reussite);
+  flex: none;
+}
+
+/* Sprites plus petits dans la liste */
+.liste-a-cocher .sprite {
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+  flex: none;
+}
+
+/* Une ligne cochée devient grisée et barrée */
+.liste-a-cocher label:has(input:checked) span {
+  text-decoration: line-through;
+  color: var(--texte-2);
+}

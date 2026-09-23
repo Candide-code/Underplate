@@ -1,0 +1,26 @@
+// ==========================================================
+// LE JOUEUR : sa progression et l'en-tête de l'accueil
+// ==========================================================
+
+// "let" et pas "const" : la sauvegarde pourra remplacer tout l'objet
+let joueur = {
+  xp: 0,
+  recettesFaites: {} // ex. { omelette: 3 } = omelette faite 3 fois
+};
+
+// Nombre de fois que le joueur a fini une recette (0 si jamais)
+function nombreDeFois(idRecette) {
+  return joueur.recettesFaites[idRecette] || 0;
+}
+
+// Met à jour l'en-tête : niveau, titre, barre et texte d'XP
+function afficherEntete() {
+  const infos = calculerNiveau(joueur.xp);
+  const pourcentage = (infos.xpDansNiveau / infos.xpNecessaire) * 100;
+
+  document.getElementById("entete-niveau").textContent =
+    "Niv. " + infos.niveau + " · " + titreDuNiveau(infos.niveau);
+  document.getElementById("entete-barre").style.width = pourcentage + "%";
+  document.getElementById("entete-xp").textContent =
+    infos.xpDansNiveau + " / " + infos.xpNecessaire + " XP";
+}

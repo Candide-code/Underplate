@@ -1,0 +1,116 @@
+/* ==========================================================
+   CUISINE : progression, ustensile, dialogue, zone du bas
+   ========================================================== */
+
+#cuisine-progression {
+  font-family: var(--police-titre);
+  font-size: 12px;
+}
+
+/* Pastilles de progression : une par étape */
+.pastilles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.pastilles span {
+  width: 14px;
+  height: 14px;
+  background: var(--boite);
+  border: 2px solid var(--texte);
+}
+
+.pastilles .faite { background: var(--reussite); }
+.pastilles .en-cours { background: var(--accent); }
+
+/* La scène : l'ustensile au centre, son contenu en dessous */
+.scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 0;
+  min-height: 190px;
+}
+
+/* L'ustensile en grand (sprite temporaire pour l'instant) */
+#cuisine-ustensile .sprite {
+  width: 128px;
+  height: 96px;
+  font-size: 12px;
+  background: var(--boite);
+  color: var(--texte);
+}
+
+/* Les ingrédients déjà ajoutés */
+.contenu-ustensile {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  min-height: 48px;
+}
+
+.contenu-ustensile .sprite {
+  width: 48px;
+  height: 48px;
+  font-size: 14px;
+}
+
+/* Message d'aide après 3 erreurs */
+.aide {
+  margin-top: 8px !important;
+  color: #ffcd75;
+}
+
+/* Zone du bas (plateau, action ou minuteur) */
+.zone-bas {
+  margin-top: 20px;
+}
+
+/* Plateau : 4 ingrédients par ligne */
+.plateau {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.case-ingredient {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  background: var(--boite);
+  color: var(--texte);
+  border: var(--pixel) solid var(--texte);
+  box-shadow: var(--pixel) var(--pixel) 0 var(--texte);
+  font-family: var(--police-texte);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.case-ingredient:active {
+  transform: translate(var(--pixel), var(--pixel));
+  box-shadow: none;
+}
+
+.case-ingredient .sprite {
+  width: 48px;
+  height: 48px;
+  font-size: 16px;
+}
+
+.case-ingredient.tremble {
+  border-color: var(--erreur);
+}
+
+/* Minuteur */
+.minuteur {
+  margin: 0;
+  text-align: center;
+  font-family: var(--police-titre);
+  font-size: 40px;
+}

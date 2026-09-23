@@ -6,8 +6,8 @@
    Une variable CSS se déclare avec -- et s'utilise avec var(--nom).
    Palette : Sweetie 16 (lospec.com) */
 :root {
-  --fond: #f4f4f4;
-  --boite: #94b0c2;
+  --fond: #c5d1b5; /* vert sauge (hors Sweetie 16) */
+  --boite: #f2ebd3; /* crème (hors Sweetie 16) */
   --texte: #1a1c2c;
   --texte-2: #566c86;
   --accent: #ef7d57;
@@ -136,5 +136,85 @@ img {
 
 .barre-xp-remplissage {
   height: 100%;
+  width: 0;
   background: var(--xp);
+  transition: width 0.8s steps(12); /* se remplit par "crans", façon pixel */
+}
+
+/* ---------- 5. Écrans et éléments communs ---------- */
+
+/* Un élément avec l'attribut hidden est toujours caché */
+[hidden] {
+  display: none !important;
+}
+
+/* Chaque écran reste étroit sur ordi, comme sur un téléphone */
+.ecran {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.titre-section {
+  margin: 28px 0 12px;
+}
+
+/* Barre du haut : bouton retour + titre */
+.barre-haut {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.barre-haut h2 {
+  margin: 0;
+}
+
+.bouton-icone {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  font-size: 20px;
+  background: var(--boite);
+  color: var(--texte);
+  border: var(--pixel) solid var(--texte);
+  cursor: pointer;
+}
+
+/* Gros bouton pleine largeur (facile à toucher avec les mains occupées) */
+.bouton-large {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 16px;
+  font-size: 14px;
+}
+
+/* Bouton discret, style lien */
+.bouton-lien {
+  display: block;
+  margin: 12px auto 0;
+  background: none;
+  border: none;
+  color: var(--texte-2);
+  font-family: var(--police-texte);
+  font-size: 16px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Tremblement (mauvais ingrédient, taps) */
+.tremble {
+  animation: tremble 0.3s steps(4);
+}
+
+@keyframes tremble {
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tremble { animation: none; }
+  .barre-xp-remplissage { transition: none; }
 }

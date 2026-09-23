@@ -1,0 +1,58 @@
+/* ==========================================================
+   FIN DE RECETTE
+   ========================================================== */
+
+#ecran-fin {
+  text-align: center;
+}
+
+.titre-fin {
+  color: var(--texte);
+  margin-top: 12px;
+}
+
+.fin-sprite .sprite {
+  width: 96px;
+  height: 96px;
+  font-size: 32px;
+}
+
+.fin-nom {
+  margin: 12px 0 0;
+}
+
+.fin-gain {
+  font-family: var(--police-titre);
+  font-size: 22px;
+  color: var(--accent);
+  margin: 24px 0 12px;
+}
+
+#fin-dialogue {
+  margin-top: 20px;
+  text-align: left;
+}
+
+#fin-dialogue p + p {
+  margin-top: 8px;
+}
+
+/* Récap repliable */
+.recap {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.recap summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.recap ol {
+  margin: 12px 0 0;
+  padding-left: 22px;
+}
+
+.recap li + li {
+  margin-top: 6px;
+}

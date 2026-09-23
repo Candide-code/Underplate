@@ -12,30 +12,132 @@
 
   <!-- Styles : d'abord la base, puis chaque fonctionnalité -->
   <link rel="stylesheet" href="base/base.css">
+  <link rel="stylesheet" href="accueil/accueil.css">
+  <link rel="stylesheet" href="preparation/preparation.css">
+  <link rel="stylesheet" href="cuisine/cuisine.css">
+  <link rel="stylesheet" href="fin-recette/fin-recette.css">
 </head>
 <body>
-  <!-- Page de test du style pixel (sera remplacée à l'étape 4) -->
-  <h1>Petit Chef</h1>
 
-  <div class="cadre">
-    <h2>Niv. 3 - Cuistot</h2>
-    <div class="barre-xp">
-      <div class="barre-xp-remplissage" style="width: 70%"></div>
+  <!-- Un seul écran est visible à la fois : les autres ont l'attribut "hidden" -->
+
+  <!-- ===== 1. ACCUEIL ===== -->
+  <main id="ecran-accueil" class="ecran">
+    <header class="entete-joueur cadre">
+      <span class="sprite sprite-temp">C</span>
+      <div class="entete-infos">
+        <h2 id="entete-niveau">Niv. 1 · Commis</h2>
+        <div class="barre-xp">
+          <div id="entete-barre" class="barre-xp-remplissage"></div>
+        </div>
+        <p id="entete-xp" class="entete-xp">0 / 70 XP</p>
+      </div>
+    </header>
+
+    <h2 class="titre-section">Tes recettes</h2>
+    <!-- Les cartes sont créées par accueil.js à partir de la liste des recettes -->
+    <section id="grille-recettes" class="grille-recettes"></section>
+  </main>
+
+  <!-- ===== 2. PRÉPARATION ===== -->
+  <main id="ecran-preparation" class="ecran" hidden>
+    <div class="barre-haut">
+      <button id="prepa-retour" class="bouton-icone" aria-label="Retour à l'accueil">←</button>
+      <h2 id="prepa-titre"></h2>
     </div>
-    <p>78 / 109 XP</p>
-  </div>
 
-  <br>
+    <div class="prepa-resume cadre">
+      <div id="prepa-sprite"></div>
+      <p id="prepa-infos"></p>
+    </div>
 
-  <div class="dialogue">
-    <p>* Casse 2 oeufs dans la poêle.</p>
-  </div>
+    <h3 class="titre-section">Ingrédients</h3>
+    <ul id="prepa-ingredients" class="liste-a-cocher cadre"></ul>
 
-  <br>
+    <h3 class="titre-section">Ustensiles</h3>
+    <ul id="prepa-ustensiles" class="liste-a-cocher cadre"></ul>
 
-  <button class="bouton">COMMENCER ▶</button>
+    <button id="prepa-commencer" class="bouton bouton-large">COMMENCER ▶</button>
+  </main>
 
-  <!-- Scripts : chaque fonctionnalité, puis main.js en dernier -->
+  <!-- ===== 3. CUISINE ===== -->
+  <main id="ecran-cuisine" class="ecran" hidden>
+    <div class="barre-haut">
+      <button id="cuisine-quitter" class="bouton-icone" aria-label="Quitter la recette">✕</button>
+      <span id="cuisine-progression"></span>
+    </div>
+    <div id="cuisine-pastilles" class="pastilles"></div>
+
+    <!-- L'ustensile et ce qu'on a mis dedans -->
+    <div id="cuisine-scene" class="scene">
+      <div id="cuisine-ustensile"></div>
+      <div id="cuisine-contenu" class="contenu-ustensile"></div>
+    </div>
+
+    <div class="dialogue">
+      <p id="cuisine-texte"></p>
+      <p id="cuisine-aide" class="aide" hidden></p>
+    </div>
+
+    <!-- Étape "ajouter" : le plateau d'ingrédients -->
+    <div id="zone-plateau" class="zone-bas" hidden>
+      <div id="cuisine-plateau" class="plateau"></div>
+    </div>
+
+    <!-- Étape "action" : taper plusieurs fois -->
+    <div id="zone-action" class="zone-bas" hidden>
+      <button id="action-bouton" class="bouton bouton-large"></button>
+      <div class="barre-xp">
+        <div id="action-jauge" class="barre-xp-remplissage"></div>
+      </div>
+    </div>
+
+    <!-- Étape "cuisson" : le minuteur -->
+    <div id="zone-cuisson" class="zone-bas" hidden>
+      <p id="minuteur-affichage" class="minuteur">00:00</p>
+      <button id="minuteur-lancer" class="bouton bouton-large">LANCER ▶</button>
+      <button id="minuteur-suivant" class="bouton bouton-large" hidden>ÉTAPE SUIVANTE ▶</button>
+      <button id="minuteur-passer" class="bouton-lien">Passer le minuteur</button>
+    </div>
+  </main>
+
+  <!-- ===== 4. FIN DE RECETTE ===== -->
+  <main id="ecran-fin" class="ecran" hidden>
+    <h2 class="titre-fin">★ RECETTE TERMINÉE ★</h2>
+    <div id="fin-sprite" class="fin-sprite"></div>
+    <h3 id="fin-nom" class="fin-nom"></h3>
+
+    <button id="fin-jai-fini" class="bouton bouton-large">J'AI FINI !</button>
+
+    <div id="fin-resultats" hidden>
+      <p id="fin-gain" class="fin-gain"></p>
+      <div class="barre-xp">
+        <div id="fin-barre" class="barre-xp-remplissage"></div>
+      </div>
+      <p id="fin-xp" class="entete-xp"></p>
+
+      <div id="fin-dialogue" class="dialogue"></div>
+
+      <details class="recap cadre">
+        <summary>Récap de la recette</summary>
+        <ol id="fin-recap"></ol>
+      </details>
+
+      <button id="fin-retour" class="bouton bouton-large">RETOUR ▶</button>
+    </div>
+  </main>
+
+  <!-- Scripts : les outils communs, les données, chaque fonctionnalité, puis main.js en dernier -->
+  <script src="base/outils.js"></script>
+  <script src="recettes/ingredients.js"></script>
+  <script src="recettes/recettes.js"></script>
+  <script src="joueur/xp.js"></script>
+  <script src="joueur/joueur.js"></script>
+  <script src="sauvegarde/sauvegarde.js"></script>
+  <script src="accueil/accueil.js"></script>
+  <script src="preparation/preparation.js"></script>
+  <script src="cuisine/cuisine.js"></script>
+  <script src="fin-recette/fin-recette.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
