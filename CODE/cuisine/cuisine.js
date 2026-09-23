@@ -89,14 +89,13 @@ function etapeSuivante() {
 
 // ---------- Type "ajouter" : le plateau ----------
 
-// Le plateau = les ingrédients de la recette + 3 pièges, mélangés
+// Le plateau = uniquement les ingrédients de la recette, mélangés
 function preparerPlateau(recette) {
   const idsRecette = recette.ingredients.map(ligne => ligne.id);
-  const pieges = melanger(Object.keys(ingredients).filter(id => !idsRecette.includes(id))).slice(0, 3);
   const plateau = document.getElementById("cuisine-plateau");
   plateau.innerHTML = "";
 
-  for (const id of melanger([...idsRecette, ...pieges])) {
+  for (const id of melanger(idsRecette)) {
     const ingredient = ingredients[id];
     const bouton = document.createElement("button");
     bouton.className = "case-ingredient";
@@ -142,6 +141,7 @@ function preparerAction(etape) {
 
 document.getElementById("action-bouton").addEventListener("click", () => {
   const etape = etapeActuelle();
+  if (cuisine.taps >= etape.fois) return; // jauge déjà pleine : on ignore les taps en trop
   cuisine.taps++;
   document.getElementById("action-jauge").style.width = (cuisine.taps / etape.fois) * 100 + "%";
   faireTrembler(document.getElementById("cuisine-scene"));
