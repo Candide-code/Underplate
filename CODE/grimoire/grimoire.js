@@ -43,6 +43,9 @@ function afficherGrimoire() {
     } else {
       decouvertes++;
       bouton.textContent = recette.nom;
+      if (estNouveauDansGrimoire(recette.id)) {
+        bouton.innerHTML += '<span class="badge-new">NEW!</span>';
+      }
       bouton.addEventListener("click", () => ouvrirFiche(recette));
     }
 
@@ -62,6 +65,12 @@ let recetteDeLaFiche = null;
 
 function ouvrirFiche(recette) {
   recetteDeLaFiche = recette;
+
+  // La fiche est ouverte : ce n'est plus une nouveauté, le badge NEW! disparaît
+  if (!joueur.grimoireLu.includes(recette.id)) {
+    joueur.grimoireLu.push(recette.id);
+    sauvegarder();
+  }
 
   document.getElementById("fiche-titre").textContent = recette.nom;
   document.getElementById("fiche-sprite").innerHTML =

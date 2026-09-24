@@ -20,6 +20,7 @@
 }
 
 .ligne-grimoire {
+  position: relative; /* pour placer le badge NEW! dans le coin */
   display: block;
   width: 100%;
   padding: 16px;

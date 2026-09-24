@@ -7,6 +7,8 @@
 
 function afficherAccueil() {
   afficherEntete();
+  // Badge NEW! sur GRIMOIRE tant qu'une nouvelle fiche n'a pas été ouverte
+  document.getElementById("grimoire-badge").hidden = !grimoireANouveautes();
   afficherEcran("ecran-accueil");
 }
 

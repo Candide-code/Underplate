@@ -101,23 +101,18 @@ function afficherEtape() {
   if (etape.type === "cuisson") preparerCuisson(etape);
 }
 
-// Ce qu'il y a dans l'ustensile : les ingrédients ajoutés depuis qu'on
-// utilise cet ustensile. On le recalcule à chaque étape à partir de la
-// recette, comme ça il est juste aussi quand on revient en arrière.
+// Ce qu'il y a dans l'ustensile : tous les ingrédients ajoutés dans CET
+// ustensile avant l'étape en cours (même si on est passé par un autre
+// entre-temps, ex. casserole → poêle → casserole). On le recalcule à
+// chaque étape à partir de la recette, comme ça il est juste aussi quand
+// on revient en arrière.
 function afficherContenu() {
   const etapes = cuisine.recette.etapes;
   const ustensileActuel = etapeActuelle().ustensile;
 
-  // On remonte jusqu'à la 1re étape qui utilise ce même ustensile
-  let debut = cuisine.indexEtape;
-  while (debut > 0 && etapes[debut - 1].ustensile === ustensileActuel) {
-    debut--;
-  }
-
-  // Puis on affiche chaque ingrédient ajouté entre cette étape et maintenant
   let html = "";
-  for (let i = debut; i < cuisine.indexEtape; i++) {
-    if (etapes[i].type === "ajouter") {
+  for (let i = 0; i < cuisine.indexEtape; i++) {
+    if (etapes[i].type === "ajouter" && etapes[i].ustensile === ustensileActuel) {
       const ingredient = ingredients[etapes[i].ingredient];
       html += htmlSprite(ingredient.sprite, ingredient.nom[0], ingredient.nom);
     }

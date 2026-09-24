@@ -31,8 +31,14 @@
 }
 
 .bouton-menu {
+  position: relative; /* pour placer le badge NEW! dans le coin */
   text-align: left;
   padding: 20px;
+}
+
+/* Le bouton est déjà orange : badge jaune pour qu'il se voie */
+.bouton-menu .badge-new {
+  background: var(--xp);
 }
 
 .menu-sous-titre {
@@ -99,7 +105,8 @@
   color: var(--texte-2);
 }
 
-/* Badge NEW! : recette débloquée mais jamais faite */
+/* Badge NEW! : recette jamais faite (écran Recettes),
+   ou nouvelle fiche pas encore ouverte (Grimoire) */
 .badge-new {
   position: absolute;
   top: -10px;

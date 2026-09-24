@@ -20,6 +20,11 @@ function charger() {
     if (texte) {
       joueur = JSON.parse(texte);
     }
+    // Sauvegarde d'avant le badge NEW! du Grimoire : on considère
+    // que les recettes déjà faites ont déjà été lues
+    if (!joueur.grimoireLu) {
+      joueur.grimoireLu = Object.keys(joueur.recettesFaites);
+    }
   } catch (erreur) {
     console.warn("Chargement impossible :", erreur);
   }

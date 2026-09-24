@@ -51,5 +51,55 @@ const recettes = [
       { type: "cuisson", ustensile: "poele", duree: 60,
         texte: "Encore 1 min pour que le fromage fonde, puis glisse-la dans l'assiette." }
     ]
+  },
+
+  {
+    id: "pates-tomate",
+    nom: "Pâtes à la sauce tomate",
+    sprite: null,
+    initiale: "P",
+    difficulte: 1,
+    niveauRequis: 1,
+    temps: 15,
+
+    ingredients: [
+      { id: "pates",   quantite: "100 g" },
+      { id: "tomate",  quantite: "200 g concassées (½ boîte)" },
+      { id: "ail",     quantite: "1 gousse" },
+      { id: "huile",   quantite: "1 c. à soupe" },
+      { id: "sel",     quantite: "2 pincées" },
+      { id: "eau",     quantite: "1 L" },
+      { id: "basilic", quantite: "quelques feuilles (facultatif)" }
+    ],
+    ustensiles: ["Casserole", "Poêle", "Cuillère en bois", "Passoire"],
+
+    // La sauce se prépare pendant que l'eau chauffe, puis mijote
+    // pendant que les pâtes cuisent : on passe d'un ustensile à l'autre.
+    etapes: [
+      { type: "ajouter", ustensile: "casserole", ingredient: "eau",
+        texte: "Remplis la casserole d'eau et mets-la sur feu vif, avec un couvercle." },
+      { type: "ajouter", ustensile: "poele",     ingredient: "huile",
+        texte: "Pendant que l'eau chauffe, verse l'huile dans la poêle, à feu moyen." },
+      { type: "ajouter", ustensile: "poele",     ingredient: "ail",
+        texte: "Épluche et hache l'ail, puis fais-le revenir 1 min. Il ne doit pas brûler." },
+      { type: "ajouter", ustensile: "poele",     ingredient: "tomate",
+        texte: "Ajoute les tomates concassées." },
+      { type: "ajouter", ustensile: "poele",     ingredient: "sel",
+        texte: "Et une pincée de sel." },
+      { type: "action",  ustensile: "poele",     action: "Remuer", fois: 3,
+        texte: "Remue, puis baisse à feu doux : la sauce va mijoter pendant la cuisson des pâtes." },
+      { type: "ajouter", ustensile: "casserole", ingredient: "sel",
+        texte: "Quand l'eau bout à gros bouillons, ajoute une pincée de sel." },
+      { type: "ajouter", ustensile: "casserole", ingredient: "pates",
+        texte: "Verse les pâtes dans l'eau." },
+      { type: "cuisson", ustensile: "casserole", duree: 600,
+        texte: "Laisse cuire environ 10 min (regarde le paquet). Remue les pâtes et la sauce de temps en temps." },
+      { type: "action",  ustensile: "casserole", action: "Égoutter", fois: 1,
+        texte: "Égoutte les pâtes dans la passoire." },
+      { type: "action",  ustensile: "poele",     action: "Mélanger", fois: 3,
+        texte: "Verse les pâtes dans la poêle et mélange-les bien avec la sauce." },
+      { type: "ajouter", ustensile: "poele",     ingredient: "basilic",
+        texte: "Sers et ajoute quelques feuilles de basilic, si tu en as." }
+    ]
   }
 ];

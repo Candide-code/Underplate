@@ -21,11 +21,16 @@ const ingredients = {
   tomate:       { nom: "Tomate",      sprite: "assets/sprites/ingredients/tomate.png" },
   "petits-pois": { nom: "Petits pois", sprite: "assets/sprites/ingredients/petits-pois.png" },
   beurre:       { nom: "Beurre",      sprite: null },
-  poivre:       { nom: "Poivre",      sprite: null }
+  poivre:       { nom: "Poivre",      sprite: null },
+  pates:        { nom: "Pâtes",       sprite: null },
+  huile:        { nom: "Huile",       sprite: null },
+  basilic:      { nom: "Basilic",     sprite: null },
+  eau:          { nom: "Eau",         sprite: null }
 };
 
 // Les ustensiles affichés au centre de l'écran de cuisine
 const ustensiles = {
-  bol:   { nom: "Bol",   sprite: null },
-  poele: { nom: "Poêle", sprite: null }
+  bol:       { nom: "Bol",       sprite: null },
+  poele:     { nom: "Poêle",     sprite: null },
+  casserole: { nom: "Casserole", sprite: null }
 };
