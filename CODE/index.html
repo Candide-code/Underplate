@@ -12,6 +12,7 @@
 
   <!-- Styles : d'abord la base, puis chaque fonctionnalité -->
   <link rel="stylesheet" href="base/base.css">
+  <link rel="stylesheet" href="chef/chef.css">
   <link rel="stylesheet" href="accueil/accueil.css">
   <link rel="stylesheet" href="preparation/preparation.css">
   <link rel="stylesheet" href="cuisine/cuisine.css">
@@ -25,9 +26,12 @@
   <!-- ===== 1. ACCUEIL ===== -->
   <main id="ecran-accueil" class="ecran">
     <header class="entete-joueur cadre">
-      <span class="sprite sprite-temp">C</span>
+      <!-- Le perso du joueur, dessiné par afficherEntete() (joueur.js).
+           C'est un bouton : on le touche pour modifier son chef. -->
+      <button id="entete-avatar" class="bouton-avatar" aria-label="Modifier mon chef"></button>
       <div class="entete-infos">
-        <h2 id="entete-niveau">Niv. 1 · Commis</h2>
+        <h2 id="entete-nom">Chef</h2>
+        <p id="entete-niveau" class="entete-niveau">Niv. 1 · Commis</p>
         <div class="barre-xp">
           <div id="entete-barre" class="barre-xp-remplissage"></div>
         </div>
@@ -47,6 +51,29 @@
         <span class="menu-sous-titre">Relire les recettes déjà cuisinées</span>
       </button>
     </nav>
+  </main>
+
+  <!-- ===== CRÉE TON CHEF : pseudo + apparence du perso ===== -->
+  <main id="ecran-creation" class="ecran" hidden>
+    <div class="barre-haut">
+      <!-- Le retour n'apparaît que quand on modifie un chef déjà créé -->
+      <button id="creation-retour" class="bouton-icone" aria-label="Retour à l'accueil">←</button>
+      <h2 id="creation-titre">Crée ton chef</h2>
+    </div>
+
+    <!-- Le perso en grand, mis à jour à chaque flèche -->
+    <div id="creation-apercu" class="creation-apercu cadre"></div>
+
+    <div class="creation-reglages cadre">
+      <label class="creation-ligne">
+        <span class="creation-nom">Pseudo</span>
+        <input id="creation-pseudo" class="creation-pseudo" type="text" maxlength="12" autocomplete="off" placeholder="Ton nom">
+      </label>
+      <!-- Une ligne ◀ valeur ▶ par réglage, créées par creation.js -->
+      <div id="creation-lignes"></div>
+    </div>
+
+    <button id="creation-valider" class="bouton bouton-large">C'EST PARTI ▶</button>
   </main>
 
   <!-- ===== RECETTES : une carte par recette ===== -->
@@ -190,12 +217,14 @@
   <script src="recettes/recettes.js"></script>
   <script src="joueur/xp.js"></script>
   <script src="joueur/joueur.js"></script>
+  <script src="chef/chef.js"></script>
   <script src="sauvegarde/sauvegarde.js"></script>
   <script src="accueil/accueil.js"></script>
   <script src="preparation/preparation.js"></script>
   <script src="cuisine/cuisine.js"></script>
   <script src="fin-recette/fin-recette.js"></script>
   <script src="grimoire/grimoire.js"></script>
+  <script src="chef/creation.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

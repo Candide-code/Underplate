@@ -6,7 +6,16 @@
 // XP de base selon la difficulté (index = nombre d'étoiles)
 const XP_PAR_DIFFICULTE = [0, 20, 35, 55, 80, 120];
 
-const TITRES = ["Commis", "Apprenti", "Cuistot", "Chef de partie", "Sous-chef", "Chef", "Chef étoilé"];
+// Un titre par niveau, au masculin (m) et au féminin (f)
+const TITRES = [
+  { m: "Commis",         f: "Commise" },
+  { m: "Apprenti",       f: "Apprentie" },
+  { m: "Cuistot",        f: "Cuistote" },
+  { m: "Chef de partie", f: "Cheffe de partie" },
+  { m: "Sous-chef",      f: "Sous-cheffe" },
+  { m: "Chef",           f: "Cheffe" },
+  { m: "Chef étoilé",    f: "Cheffe étoilée" }
+];
 
 // XP à gagner pour passer du niveau "niveau" au suivant : 70 × 1,25^(niveau − 1)
 function xpPourNiveauSuivant(niveau) {
@@ -29,10 +38,11 @@ function calculerNiveau(xpTotale) {
   };
 }
 
-// Titre du joueur (après le dernier titre, on le garde)
-function titreDuNiveau(niveau) {
+// Titre du joueur (après le dernier titre, on le garde).
+// genre = "m" ou "f" : TITRES[index][genre] revient à écrire .m ou .f
+function titreDuNiveau(niveau, genre) {
   const index = Math.min(niveau, TITRES.length) - 1;
-  return TITRES[index];
+  return TITRES[index][genre];
 }
 
 // Bonus d'écart : une recette trop facile pour ton niveau rapporte moins

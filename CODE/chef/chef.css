@@ -1,0 +1,122 @@
+/* ==========================================================
+   LE CHEF : superposition des couches
+   ========================================================== */
+
+/* Les images font 64×64, mais le perso n'occupe que le milieu
+   (24 px de large sur 42 de haut, à partir de x 20 et y 2 :
+   ça contient toutes les couches, même l'afro, les locs et la toque).
+   La boîte ne montre que cette zone : c'est une « fenêtre »
+   sur l'image, le reste est coupé par overflow: hidden.
+
+   --zoom règle l'agrandissement : 2 = chaque pixel du sprite
+   fait 2 pixels à l'écran. On pourra mettre --zoom: 4 sur
+   l'écran « Crée ton chef » pour l'afficher en grand. */
+.chef {
+  --zoom: 2;
+  position: relative;          /* les couches se placent par rapport à cette boîte */
+  flex: none;                  /* dans l'en-tête, la boîte garde sa taille */
+  width: calc(24px * var(--zoom));
+  height: calc(42px * var(--zoom));
+  overflow: hidden;
+}
+
+/* Toutes les couches au même endroit, l'une sur l'autre */
+.chef img {
+  position: absolute;
+  left: calc(-20px * var(--zoom)); /* on décale l'image pour centrer le perso */
+  top: calc(-2px * var(--zoom));
+  width: calc(64px * var(--zoom));
+  height: calc(64px * var(--zoom));
+}
+
+/* ---------- L'avatar de l'en-tête : un bouton sans décor ---------- */
+.bouton-avatar {
+  flex: none;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.bouton-avatar:focus-visible {
+  outline: var(--pixel) dashed var(--accent);
+  outline-offset: var(--pixel);
+}
+
+/* ---------- Écran « Crée ton chef » ---------- */
+
+/* Le perso en grand, centré */
+.creation-apercu {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+.creation-apercu .chef {
+  --zoom: 4; /* 4 fois plus grand : chaque pixel du sprite = 4 pixels */
+}
+
+.creation-reglages {
+  margin-top: 16px;
+}
+
+/* Une ligne : nom | ◀ | valeur | ▶
+   grid-template-columns donne la largeur de chaque colonne :
+   1fr = « une part de la place qui reste » */
+.creation-ligne {
+  display: grid;
+  grid-template-columns: 5.5em 44px 1fr 44px;
+  align-items: center;
+  gap: 8px;
+}
+
+.creation-ligne + .creation-ligne,
+#creation-lignes .creation-ligne:first-child {
+  margin-top: 10px;
+}
+
+.creation-nom {
+  font-family: var(--police-titre);
+  font-size: 10px;
+  color: var(--texte-2);
+}
+
+.creation-valeur {
+  text-align: center;
+  font-family: var(--police-titre);
+  font-size: 12px;
+}
+
+/* Le pseudo prend les 3 colonnes à droite du nom */
+.creation-pseudo {
+  grid-column: 2 / 5;
+  min-width: 0;
+  padding: 10px;
+  font-family: var(--police-titre);
+  font-size: 12px;
+  color: var(--texte);
+  background: var(--fond);
+  border: var(--pixel) solid var(--texte);
+}
+
+.creation-pseudo:focus {
+  outline: var(--pixel) dashed var(--accent);
+  outline-offset: var(--pixel);
+}
+
+/* Les flèches : même style que les boutons ← des autres écrans */
+.bouton-fleche {
+  width: 44px;
+  height: 44px;
+  font-size: 16px;
+  background: var(--boite);
+  color: var(--texte);
+  border: var(--pixel) solid var(--texte);
+  box-shadow: var(--pixel) var(--pixel) 0 var(--texte);
+  cursor: pointer;
+}
+
+.bouton-fleche:active {
+  transform: translate(var(--pixel), var(--pixel));
+  box-shadow: none;
+}

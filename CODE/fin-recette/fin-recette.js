@@ -49,15 +49,15 @@ document.getElementById("fin-jai-fini").addEventListener("click", () => {
   // 3. Message dans la boîte de dialogue
   let lignes = [];
   if (apres.niveau > avant.niveau) {
-    lignes.push("* Tu te sens plus fort. Niveau " + apres.niveau + " !");
-    lignes.push("* Tu es maintenant " + titreDuNiveau(apres.niveau) + ".");
+    lignes.push("* Tu te sens plus " + accord("fort", "forte") + ". Niveau " + apres.niveau + " !");
+    lignes.push("* Tu es maintenant " + titreDuNiveau(apres.niveau, chefActuel().genre) + ".");
     const debloquees = recettes.filter(r => r.niveauRequis > avant.niveau && r.niveauRequis <= apres.niveau);
     for (const r of debloquees) {
       lignes.push("* Nouvelle recette : " + r.nom + " !");
     }
   } else {
     const manque = apres.xpNecessaire - apres.xpDansNiveau;
-    lignes.push("* Bien joué, chef !");
+    lignes.push("* Bien joué, " + nomDuChef() + " !");
     lignes.push("* Plus que " + manque + " XP avant le niveau " + (apres.niveau + 1) + ".");
   }
   if (rangApres !== rangAvant) {

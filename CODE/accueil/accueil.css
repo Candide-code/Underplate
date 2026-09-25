@@ -14,9 +14,20 @@
   min-width: 0; /* sans ça, un texte long fait déborder la boîte */
 }
 
+/* "Chef Marie" / "Cheffe Marie" */
 .entete-infos h2 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  overflow-wrap: anywhere; /* un pseudo long passe à la ligne au lieu de déborder */
+}
+
+/* "Niv. 4 · Cheffe de partie" : plus petit, peut passer sur 2 lignes */
+.entete-niveau {
   margin: 0 0 8px;
-  font-size: 12px; /* "Niv. 4 · Chef de partie" doit tenir sur un téléphone */
+  font-family: var(--police-titre);
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--texte-2);
 }
 
 .entete-xp {

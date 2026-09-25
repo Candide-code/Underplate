@@ -60,7 +60,7 @@ const recettes = [
     initiale: "P",
     difficulte: 1,
     niveauRequis: 1,
-    temps: 15,
+    temps: 20,
 
     ingredients: [
       { id: "pates",   quantite: "100 g" },

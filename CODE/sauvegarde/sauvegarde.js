@@ -25,6 +25,10 @@ function charger() {
     if (!joueur.grimoireLu) {
       joueur.grimoireLu = Object.keys(joueur.recettesFaites);
     }
+    // Sauvegarde d'avant « Crée ton chef » : pas encore de perso
+    if (joueur.chef === undefined) {
+      joueur.chef = null;
+    }
   } catch (erreur) {
     console.warn("Chargement impossible :", erreur);
   }
