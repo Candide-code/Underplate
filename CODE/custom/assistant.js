@@ -646,7 +646,9 @@ const ACTIONS_PAR_USTENSILE = {
   bouilloire:         ["Allumer", "Verser"],
   "grille-pain":      ["Mettre", "Allumer", "Sortir"],
   gaufrier:           ["Préchauffer", "Verser", "Sortir"],
-  raclette:           ["Allumer", "Mettre", "Servir"]
+  raclette:           ["Allumer", "Mettre", "Servir"],
+  congelateur:        ["Mettre", "Sortir"],
+  refrigerateur:      ["Mettre", "Sortir"]
 };
 
 // Les actions dans l'ordre pour un ustensile : celles de l'appareil, puis de son

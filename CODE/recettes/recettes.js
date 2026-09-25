@@ -103,5 +103,68 @@ const recettes = [
       { type: "ajouter", ustensile: "poele",     ingredient: "basilic",
         texte: "Sers et ajoute quelques feuilles de basilic, si tu en as." }
     ]
+  },
+
+  {
+    id: "cookies",
+    nom: "Cookies",
+    categorie: "sucre",
+    sprite: "assets/sprites/plats/cookies.png", // pack « Pixel Food » (ghostpixxells)
+    initiale: "C",
+    difficulte: 2,
+    niveauRequis: 1,
+    temps: 60, // arrondi : 15-20 min de préparation + 35 min de congélateur + 12 min de cuisson
+
+    // Pour 15 cookies
+    ingredients: [
+      { id: "beurre",           quantite: "200 g, mou" },
+      { id: "sucre",            quantite: "200 g (roux ou blanc)" },
+      { id: "oeuf",             quantite: "2" },
+      { id: "farine",           quantite: "280 g" },
+      { id: "levure-chimique",  quantite: "1 c. à café" },
+      { id: "pepites-chocolat", quantite: "150 g" }
+    ],
+    ustensiles: ["saladier", "cuillere", "congelateur", "four", "plaque", "papier-cuisson"],
+
+    // Le four préchauffe pendant les 10 dernières minutes de congélateur :
+    // l'attente de 35 min est coupée en deux minuteurs (25 + 10).
+    etapes: [
+      { type: "ajouter", ustensile: "saladier", ingredient: "beurre",
+        texte: "Mets le beurre mou dans le saladier." },
+      { type: "ajouter", ustensile: "saladier", ingredient: "sucre",
+        texte: "Ajoute le sucre, roux ou blanc." },
+      { type: "action",  ustensile: "saladier", action: "Mélanger", fois: 6,
+        texte: "Mélange jusqu'à obtenir une crème." },
+      { type: "ajouter", ustensile: "saladier", ingredient: "oeuf",
+        texte: "Ajoute les 2 œufs." },
+      { type: "action",  ustensile: "saladier", action: "Mélanger", fois: 4,
+        texte: "Mélange bien." },
+      { type: "ajouter", ustensile: "saladier", ingredient: "farine",
+        texte: "Ajoute la farine…" },
+      { type: "ajouter", ustensile: "saladier", ingredient: "levure-chimique",
+        texte: "…et la levure chimique." },
+      { type: "action",  ustensile: "saladier", action: "Mélanger", fois: 6,
+        texte: "Mélange jusqu'à obtenir une pâte homogène." },
+      { type: "ajouter", ustensile: "saladier", ingredient: "pepites-chocolat",
+        texte: "Ajoute les pépites de chocolat." },
+      { type: "action",  ustensile: "saladier", action: "Mélanger", fois: 3,
+        texte: "Mélange pour bien les répartir dans la pâte." },
+      { type: "action",  ustensile: "congelateur", action: "Mettre", fois: 1,
+        texte: "Mets la pâte au congélateur." },
+      { type: "cuisson", ustensile: "congelateur", duree: 1500,
+        texte: "Laisse durcir la pâte 25 min." },
+      { type: "action",  ustensile: "four", action: "Préchauffer", fois: 1,
+        texte: "Préchauffe le four à 180 °C. La pâte reste au congélateur." },
+      { type: "cuisson", ustensile: "congelateur", duree: 600,
+        texte: "Encore 10 min de congélateur, le temps que le four chauffe." },
+      { type: "action",  ustensile: "plaque", action: "Mettre", fois: 15,
+        texte: "Pose du papier cuisson sur la plaque et forme 15 boules de pâte. Un tap par boule !" },
+      { type: "action",  ustensile: "four", action: "Enfourner", fois: 1,
+        texte: "Enfourne la plaque." },
+      { type: "cuisson", ustensile: "four", duree: 720,
+        texte: "Laisse cuire 12 min à 180 °C." },
+      { type: "action",  ustensile: "four", action: "Sortir", fois: 1,
+        texte: "Sors les cookies et laisse-les refroidir sur la plaque avant de les décoller." }
+    ]
   }
 ];

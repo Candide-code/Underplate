@@ -285,12 +285,16 @@ const ingredients = {
   // ----- Épicerie -----
   eau:                        { nom: "Eau",                        famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "eau.png" },
   "eau-gazeuse":              { nom: "Eau gazeuse",                famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "eau-gazeuse.png" },
+  farine:                     { nom: "Farine",                     famille: "epicerie", sprite: null },
   "graines-de-chia":          { nom: "Graines de chia",            famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "graines-de-chia.png" },
   hijiki:                     { nom: "Hijiki",                     famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "hijiki.png" },
   huile:                      { nom: "Huile",                      famille: "epicerie", sprite: null },
   kelp:                       { nom: "Kelp",                       famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "kelp.png" },
   kombu:                      { nom: "Kombu",                      famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "kombu.png" },
+  "levure-chimique":          { nom: "Levure chimique",            famille: "epicerie", sprite: null },
   nori:                       { nom: "Nori",                       famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "nori.png" },
+  "pepites-chocolat":         { nom: "Pépites de chocolat",        famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "pepites-chocolat.png" },
+  sucre:                      { nom: "Sucre",                      famille: "epicerie", sprite: null },
   wakame:                     { nom: "Wakame",                     famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "wakame.png" }
 };
 
@@ -364,6 +368,7 @@ const ustensiles = {
   blender:          { nom: "Blender",              groupe: "electromenager", sprite: null },
   bouilloire:       { nom: "Bouilloire",           groupe: "electromenager", sprite: null },
   cookeo:           { nom: "Cookeo (autocuiseur)", groupe: "electromenager", sprite: null },
+  congelateur:      { nom: "Congélateur",          groupe: "electromenager", sprite: null },
   "cuiseur-riz":    { nom: "Cuiseur à riz",        groupe: "electromenager", sprite: null },
   four:             { nom: "Four",                 groupe: "electromenager", sprite: null },
   gaufrier:         { nom: "Gaufrier",             groupe: "electromenager", sprite: null },
@@ -372,5 +377,6 @@ const ustensiles = {
   mixeur:           { nom: "Mixeur",               groupe: "electromenager", sprite: null },
   "mixeur-plongeant": { nom: "Mixeur plongeant",   groupe: "electromenager", sprite: null },
   "plaque-cuisson": { nom: "Plaque de cuisson",    groupe: "electromenager", sprite: null },
+  refrigerateur:    { nom: "Réfrigérateur",        groupe: "electromenager", sprite: null },
   robot:            { nom: "Robot pâtissier",      groupe: "electromenager", sprite: null }
 };

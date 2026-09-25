@@ -10,6 +10,8 @@ function afficherAccueil() {
   afficherEntete();
   // Badge NEW! sur GRIMOIRE tant qu'une nouvelle fiche n'a pas été ouverte
   document.getElementById("grimoire-badge").hidden = !grimoireANouveautes();
+  // Badge NEW! sur RECETTES tant qu'une recette débloquée n'a jamais été cuisinée
+  document.getElementById("recettes-badge").hidden = recettesNouvelles("jeu").length === 0;
   afficherEcran("ecran-accueil");
 }
 
@@ -31,11 +33,25 @@ let sourceChoisie = "jeu";
 // La catégorie affichée dans la grille (pour y revenir avec ←)
 let categorieChoisie = "sale";
 
+// Les recettes « nouvelles » : débloquées (niveau suffisant) mais jamais cuisinées.
+// source : "jeu" (RECETTES) ou "perso" (CUSTOM) ; categorie : "sale", "sucre" ou rien = toutes
+function recettesNouvelles(source, categorie) {
+  const niveau = calculerNiveau(joueur.xp).niveau;
+  const liste = source === "perso" ? joueur.recettesPerso : recettes;
+  return liste.filter(r =>
+    r.niveauRequis <= niveau &&
+    nombreDeFois(r.id) === 0 &&
+    (!categorie || r.categorie === categorie));
+}
+
 // source : "jeu" ou "perso". Sans rien, on garde la dernière choisie.
 function afficherCategories(source) {
   if (source) sourceChoisie = source;
   document.getElementById("categories-titre").textContent =
     sourceChoisie === "perso" ? "Mes recettes" : "Tes recettes";
+  // Badge NEW! sur SALÉ / SUCRÉ s'il y a une recette nouvelle dans cette catégorie
+  document.getElementById("badge-sale").hidden = recettesNouvelles(sourceChoisie, "sale").length === 0;
+  document.getElementById("badge-sucre").hidden = recettesNouvelles(sourceChoisie, "sucre").length === 0;
   afficherEcran("ecran-categories");
 }
 

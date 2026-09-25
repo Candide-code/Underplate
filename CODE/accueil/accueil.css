@@ -293,6 +293,13 @@
    l'orange de RECETTES / GRIMOIRE pour marquer le sous-menu.
    Titre en Pixelify Sans gras : Press Start 2P écrase les majuscules
    accentuées (le É de SALÉ sortait plus petit que les autres lettres). */
+/* Sur un bouton jaune, le badge NEW! reprend l'orange d'accent pour se voir */
+.bouton-clair .badge-new {
+  background: var(--accent);
+  font-weight: normal;
+  letter-spacing: 0;
+}
+
 .bouton-clair {
   background: var(--xp);
   font-family: var(--police-texte);
