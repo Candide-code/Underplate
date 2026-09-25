@@ -57,7 +57,7 @@ document.getElementById("fin-jai-fini").addEventListener("click", () => {
     if (titreApres !== titreAvant) {
       lignes.push("* Nouveau titre : " + titreApres + " !");
     }
-    const debloquees = recettes.filter(r => r.niveauRequis > avant.niveau && r.niveauRequis <= apres.niveau);
+    const debloquees = recettesEcrites().filter(r => r.niveauRequis > avant.niveau && r.niveauRequis <= apres.niveau);
     for (const r of debloquees) {
       lignes.push("* Nouvelle recette : " + r.nom + " !");
     }

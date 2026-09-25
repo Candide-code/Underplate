@@ -316,3 +316,48 @@
   background: var(--xp);
   color: #1a1c2c;
 }
+
+
+/* ---------- Bandeau « À DÉBLOQUER » (3 prochaines recettes) ---------- */
+
+/* Titres « À débloquer » / « Tes recettes » : Pixelify (majuscule accentuée) */
+.titre-grille {
+  margin: 8px 0;
+  font-family: var(--police-texte);
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: var(--texte-2);
+}
+
+/* 3 tuiles compactes sur une seule ligne */
+.tuiles-debloquer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.tuile-verrouillee {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 4px;
+  background: var(--fond);
+  color: var(--texte-2);
+  border: var(--pixel) dashed var(--texte-2);
+  font-family: var(--police-titre);
+  font-size: 10px;
+  text-align: center;
+}
+
+.tuile-cadenas {
+  font-size: 18px;
+}
+
+/* Champ de recherche (RECETTES et GRIMOIRE) */
+.champ-recherche {
+  margin: 0 0 12px;
+  font-size: 16px;
+}

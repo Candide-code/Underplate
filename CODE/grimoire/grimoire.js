@@ -27,20 +27,32 @@ function htmlRecap(recette) {
 // Une ligne par recette, comme la table des matières d'un livre :
 // juste le nom (pas de rang ni de compteur, ça c'est pour l'écran Recettes)
 // Les recettes à montrer selon les cases cochées :
-// rien de coché ou les deux → tout ; une seule case → seulement ce groupe
+// rien de coché ou les deux → tout ; une seule case → seulement ce groupe.
+// Le Grimoire est un album à compléter : il montre TOUTES les recettes du jeu,
+// même celles prévues mais pas encore écrites (elles restent en « ??? »).
 function recettesDuGrimoire() {
   const perso = document.getElementById("filtre-perso").checked;
   const jeu = document.getElementById("filtre-jeu").checked;
   if (perso && !jeu) return joueur.recettesPerso;
   if (jeu && !perso) return recettes;
-  return toutesLesRecettes(); // custom.js
+  return recettes.concat(joueur.recettesPerso);
 }
 
 function afficherGrimoire() {
   const liste = document.getElementById("liste-grimoire");
   liste.innerHTML = "";
   let decouvertes = 0;
-  const aMontrer = recettesDuGrimoire();
+
+  // Les recettes découvertes (cuisinées au moins une fois) en haut, les « ??? » en dessous.
+  // sort garde l'ordre d'origine à l'intérieur de chaque groupe.
+  let aMontrer = recettesDuGrimoire().slice().sort((a, b) =>
+    (nombreDeFois(a.id) === 0 ? 1 : 0) - (nombreDeFois(b.id) === 0 ? 1 : 0));
+
+  // Recherche : seulement parmi les recettes découvertes (les « ??? » n'ont pas de nom visible)
+  const recherche = simplifier(document.getElementById("recherche-grimoire").value);
+  if (recherche !== "") {
+    aMontrer = aMontrer.filter(r => nombreDeFois(r.id) > 0 && simplifier(r.nom).includes(recherche));
+  }
 
   for (const recette of aMontrer) {
     const ligne = document.createElement("li");
@@ -64,8 +76,9 @@ function afficherGrimoire() {
     liste.appendChild(ligne);
   }
 
-  document.getElementById("grimoire-compte").textContent =
-    decouvertes + " / " + aMontrer.length + " recettes découvertes";
+  document.getElementById("grimoire-compte").textContent = recherche !== ""
+    ? aMontrer.length + " résultat" + (aMontrer.length > 1 ? "s" : "")
+    : decouvertes + " / " + aMontrer.length + " recettes découvertes";
 
   afficherEcran("ecran-grimoire");
 }
@@ -100,3 +113,4 @@ document.getElementById("grimoire-retour").addEventListener("click", afficherAcc
 // Cocher / décocher une case : la liste se met à jour tout de suite
 document.getElementById("filtre-perso").addEventListener("change", afficherGrimoire);
 document.getElementById("filtre-jeu").addEventListener("change", afficherGrimoire);
+document.getElementById("recherche-grimoire").addEventListener("input", afficherGrimoire);

@@ -165,10 +165,7 @@ function validerPageInfos() {
 
 // ---------- Page 2 : ingrédients + quantité ----------
 
-// Pour chercher sans se soucier des accents ni des majuscules : "Pâtes" → "pates"
-function simplifier(texte) {
-  return texte.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-}
+// simplifier(texte) est dans base/outils.js (partagée avec les recherches)
 
 // La famille ouverte dans le sous-menu (null = on voit la liste des familles)
 let familleOuverte = null;
@@ -619,15 +616,15 @@ const TYPES_ETAPE = [
 const ACTIONS = ["Remuer", "Mélanger", "Battre", "Fouetter", "Verser", "Retourner", "Couper",
   "Éplucher", "Râper", "Écraser", "Égoutter", "Pétrir", "Étaler", "Plier", "Assaisonner", "Servir",
   "Mettre", "Couvrir", "Faire chauffer", "Faire fondre", "Faire revenir",
-  "Préchauffer", "Enfourner", "Sortir", "Allumer", "Éteindre", "Réchauffer", "Programmer", "Mixer"];
+  "Préchauffer", "Enfourner", "Sortir", "Allumer", "Éteindre", "Réchauffer", "Programmer", "Mixer", "Paner", "Dégazer", "Rouler", "Badigeonner"];
 
 // Les actions qui vont avec chaque groupe d'ustensiles : proposées en premier
 const ACTIONS_PAR_GROUPE = {
   electromenager: ["Préchauffer", "Allumer", "Mettre", "Enfourner", "Sortir", "Réchauffer", "Programmer", "Mixer", "Éteindre"],
   cuisson:        ["Faire chauffer", "Faire fondre", "Faire revenir", "Remuer", "Mélanger", "Retourner", "Verser", "Couvrir", "Égoutter", "Mettre", "Servir"],
   plats:          ["Mettre", "Étaler", "Verser", "Enfourner", "Sortir", "Couvrir", "Servir"],
-  bols:           ["Mélanger", "Battre", "Fouetter", "Verser", "Mettre", "Écraser", "Pétrir", "Assaisonner"],
-  outils:         ["Couper", "Éplucher", "Râper", "Écraser", "Étaler", "Égoutter", "Fouetter", "Mélanger"]
+  bols:           ["Mélanger", "Battre", "Fouetter", "Verser", "Mettre", "Écraser", "Pétrir", "Dégazer", "Assaisonner", "Paner"],
+  outils:         ["Couper", "Éplucher", "Râper", "Écraser", "Étaler", "Rouler", "Badigeonner", "Égoutter", "Fouetter", "Mélanger"]
 };
 
 // Quelques appareils ont leurs propres actions (passent avant celles de leur groupe)

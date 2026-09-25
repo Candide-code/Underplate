@@ -112,7 +112,15 @@
       <button id="recettes-ajouter" class="bouton-icone bouton-plus" aria-label="Créer une recette" hidden>+</button>
     </div>
     <!-- Affiché seulement si la catégorie n'a encore aucune recette -->
+    <!-- Recherche : filtre la grille pendant qu'on tape -->
+    <input id="recherche-recettes" class="champ-texte champ-recherche" type="search" autocomplete="off" placeholder="🔍 Chercher une recette…">
     <p id="recettes-vide" class="recettes-vide" hidden></p>
+    <!-- Les 3 prochaines recettes verrouillées (seulement dans RECETTES) -->
+    <div id="bandeau-debloquer" hidden>
+      <p class="titre-grille">À débloquer</p>
+      <div id="tuiles-debloquer" class="tuiles-debloquer"></div>
+      <p class="titre-grille">Tes recettes</p>
+    </div>
     <!-- Les cartes sont créées par accueil.js à partir de la liste des recettes -->
     <section id="grille-recettes" class="grille-recettes"></section>
   </main>
@@ -284,6 +292,7 @@
       <label><input id="filtre-perso" type="checkbox"> Mes recettes</label>
       <label><input id="filtre-jeu" type="checkbox"> Recettes du jeu</label>
     </div>
+    <input id="recherche-grimoire" class="champ-texte champ-recherche" type="search" autocomplete="off" placeholder="🔍 Chercher une recette…">
     <p id="grimoire-compte" class="grimoire-compte"></p>
     <!-- La liste est créée par grimoire.js -->
     <ul id="liste-grimoire" class="liste-grimoire"></ul>

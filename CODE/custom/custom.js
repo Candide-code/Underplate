@@ -233,5 +233,5 @@ function renommerIngredient(id, nouveauNom) {
 // Les recettes du jeu, puis celles du joueur (pour le Grimoire).
 // concat colle deux listes l'une après l'autre, sans modifier les originales.
 function toutesLesRecettes() {
-  return recettes.concat(joueur.recettesPerso);
+  return recettesEcrites().concat(joueur.recettesPerso); // sans les recettes prévues
 }

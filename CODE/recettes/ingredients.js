@@ -211,6 +211,7 @@ const ingredients = {
   beurre:                     { nom: "Beurre",                     famille: "laitiers", sprite: null },
   camembert:                  { nom: "Camembert",                  famille: "laitiers", sprite: DOSSIER_INGREDIENTS + "camembert.png" },
   cheddar:                    { nom: "Cheddar",                    famille: "laitiers", sprite: DOSSIER_INGREDIENTS + "cheddar.png" },
+  "cream-cheese":             { nom: "Cream cheese",               famille: "laitiers", sprite: null },
   "cottage-cheese":           { nom: "Cottage cheese",             famille: "laitiers", sprite: DOSSIER_INGREDIENTS + "cottage-cheese.png" },
   fromage:                    { nom: "Fromage",                    famille: "laitiers", sprite: DOSSIER_INGREDIENTS + "fromage.png" },
   "fromage-blanc":            { nom: "Fromage blanc",              famille: "laitiers", sprite: DOSSIER_INGREDIENTS + "fromage-blanc.png" },
@@ -269,6 +270,7 @@ const ingredients = {
   "clou-de-girofle":          { nom: "Clou de girofle",            famille: "epices", sprite: DOSSIER_INGREDIENTS + "clou-de-girofle.png" },
   cumin:                      { nom: "Cumin",                      famille: "epices", sprite: DOSSIER_INGREDIENTS + "cumin.png" },
   curcuma:                    { nom: "Curcuma",                    famille: "epices", sprite: DOSSIER_INGREDIENTS + "curcuma.png" },
+  cannelle:                   { nom: "Cannelle",                   famille: "epices", sprite: null },
   gingembre:                  { nom: "Gingembre",                  famille: "epices", sprite: DOSSIER_INGREDIENTS + "gingembre.png" },
   menthe:                     { nom: "Menthe",                     famille: "epices", sprite: DOSSIER_INGREDIENTS + "menthe.png" },
   myoga:                      { nom: "Myoga",                      famille: "epices", sprite: DOSSIER_INGREDIENTS + "myoga.png" },
@@ -283,6 +285,7 @@ const ingredients = {
   vanille:                    { nom: "Vanille",                    famille: "epices", sprite: DOSSIER_INGREDIENTS + "vanille.png" },
 
   // ----- Épicerie -----
+  chapelure:                  { nom: "Chapelure",                  famille: "epicerie", sprite: null },
   eau:                        { nom: "Eau",                        famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "eau.png" },
   "eau-gazeuse":              { nom: "Eau gazeuse",                famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "eau-gazeuse.png" },
   farine:                     { nom: "Farine",                     famille: "epicerie", sprite: null },
@@ -291,9 +294,11 @@ const ingredients = {
   huile:                      { nom: "Huile",                      famille: "epicerie", sprite: null },
   kelp:                       { nom: "Kelp",                       famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "kelp.png" },
   kombu:                      { nom: "Kombu",                      famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "kombu.png" },
+  "levure-boulangere":        { nom: "Levure boulangère",          famille: "epicerie", sprite: null },
   "levure-chimique":          { nom: "Levure chimique",            famille: "epicerie", sprite: null },
   nori:                       { nom: "Nori",                       famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "nori.png" },
   "pepites-chocolat":         { nom: "Pépites de chocolat",        famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "pepites-chocolat.png" },
+  "sucre-glace":              { nom: "Sucre glace",                famille: "epicerie", sprite: null },
   sucre:                      { nom: "Sucre",                      famille: "epicerie", sprite: null },
   wakame:                     { nom: "Wakame",                     famille: "epicerie", sprite: DOSSIER_INGREDIENTS + "wakame.png" }
 };

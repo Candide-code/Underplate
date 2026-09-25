@@ -129,3 +129,10 @@ function vibrer(motif) {
     navigator.vibrate(motif);
   }
 }
+
+// ---------- Recherche ----------
+
+// Pour chercher sans se soucier des accents ni des majuscules : "Pâtes" → "pates"
+function simplifier(texte) {
+  return texte.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+}
