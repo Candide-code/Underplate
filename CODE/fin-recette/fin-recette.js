@@ -36,6 +36,7 @@ document.getElementById("fin-jai-fini").addEventListener("click", () => {
   const bonus = [];
   if (foisAvant === 0) bonus.push("découverte ×1,5");
   if (rangAvant) bonus.push("rang " + rangAvant.nom + " +" + pourcentageBonus(rangAvant) + " %");
+  if (bonusRecetteLongue(recette) > 1) bonus.push("recette longue +25 %");
   document.getElementById("fin-gain").textContent =
     "+" + gain + " XP" + (bonus.length > 0 ? " (" + bonus.join(", ") + ")" : "");
   const barre = document.getElementById("fin-barre");

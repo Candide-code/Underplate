@@ -96,11 +96,25 @@ function pourcentageBonus(rang) {
   return Math.round((rang.bonus - 1) * 100);
 }
 
+// Le niveau « de référence » d'une recette pour le malus d'écart : le plus grand
+// entre son niveau de déblocage et son nombre d'étoiles. Une recette difficile
+// débloquée tôt (cinnamon roll ★★★★ au niveau 1) n'est pas punie comme une omelette.
+function niveauDeReference(recette) {
+  return Math.max(recette.niveauRequis, recette.difficulte);
+}
+
+// Bonus « recette longue » : +25 % pour une recette de 2 h ou plus
+const DUREE_RECETTE_LONGUE = 120; // en minutes
+function bonusRecetteLongue(recette) {
+  return recette.temps >= DUREE_RECETTE_LONGUE ? 1.25 : 1;
+}
+
 // XP gagnée en finissant une recette déjà faite "fois" fois
 function calculerXpGagnee(recette, niveauJoueur, fois) {
   const base = XP_PAR_DIFFICULTE[recette.difficulte];
   const decouverte = fois === 0 ? 1.5 : 1; // bonus découverte ×1,5 la 1re fois
   const rang = rangDeMaitrise(fois);
   const maitrise = rang ? rang.bonus : 1;  // bonus du rang déjà atteint
-  return Math.round(base * decouverte * bonusEcart(niveauJoueur, recette.niveauRequis) * maitrise);
+  const ecart = bonusEcart(niveauJoueur, niveauDeReference(recette));
+  return Math.round(base * decouverte * ecart * maitrise * bonusRecetteLongue(recette));
 }
