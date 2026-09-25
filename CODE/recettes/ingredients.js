@@ -211,6 +211,7 @@ const ingredients = {
   beurre:                     { nom: "Beurre",                     famille: "laitiers", sprite: null },
   camembert:                  { nom: "Camembert",                  famille: "laitiers", sprite: DOSSIER_INGREDIENTS + "camembert.png" },
   cheddar:                    { nom: "Cheddar",                    famille: "laitiers", sprite: DOSSIER_INGREDIENTS + "cheddar.png" },
+  "creme-fraiche":            { nom: "Crème fraîche",              famille: "laitiers", sprite: null },
   "cream-cheese":             { nom: "Cream cheese",               famille: "laitiers", sprite: null },
   "cottage-cheese":           { nom: "Cottage cheese",             famille: "laitiers", sprite: DOSSIER_INGREDIENTS + "cottage-cheese.png" },
   fromage:                    { nom: "Fromage",                    famille: "laitiers", sprite: DOSSIER_INGREDIENTS + "fromage.png" },

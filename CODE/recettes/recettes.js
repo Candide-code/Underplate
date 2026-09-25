@@ -359,9 +359,73 @@ const recettes = [
     ]
   },
 
+  {
+    id: "croque-monsieur",
+    nom: "Croque-monsieur",
+    categorie: "sale",
+    sprite: "assets/sprites/plats/croque-monsieur.png", // pack « Pixel Food » (ghostpixxells)
+    initiale: "C",
+    difficulte: 2,
+    niveauRequis: 4,
+    temps: 20,
+
+    // Pour 1 personne (2 croques), au four : le fromage est mélangé à de la
+    // crème fraîche (ou du cream cheese), salé et poivré, pour un croque fondant
+    ingredients: [
+      { id: "pain-de-mie",   quantite: "4 tranches" },
+      { id: "jambon",        quantite: "2 tranches" },
+      { id: "fromage",       quantite: "60 g, râpé" },
+      { id: "creme-fraiche", quantite: "2 c. à soupe (ou cream cheese)" },
+      { id: "beurre",        quantite: "10 g" },
+      { id: "sel",           quantite: "1 pincée" },
+      { id: "poivre",        quantite: "1 pincée" }
+    ],
+    ustensiles: ["four", "bol", "plaque", "papier-cuisson", "couteau"],
+
+    etapes: [
+      { type: "action",  ustensile: "four", action: "Préchauffer", fois: 1,
+        texte: "Préchauffe le four à 200 °C (en mode grill si tu as)." },
+
+      // --- Le mélange fromage + crème ---
+      { type: "ajouter", ustensile: "bol", ingredient: "fromage",
+        texte: "Dans un bol, mets le fromage râpé." },
+      { type: "ajouter", ustensile: "bol", ingredient: "creme-fraiche",
+        texte: "Ajoute la crème fraîche (ou du cream cheese)." },
+      { type: "ajouter", ustensile: "bol", ingredient: "sel",
+        texte: "Sale…" },
+      { type: "ajouter", ustensile: "bol", ingredient: "poivre",
+        texte: "…et poivre." },
+      { type: "action",  ustensile: "bol", action: "Mélanger", fois: 3,
+        texte: "Mélange bien." },
+
+      // --- Le montage ---
+      { type: "ajouter", ustensile: "plaque", ingredient: "pain-de-mie",
+        texte: "Pose 2 tranches de pain de mie sur la plaque, sur du papier cuisson." },
+      { type: "ajouter", ustensile: "plaque", ingredient: "beurre",
+        texte: "Beurre-les légèrement au couteau." },
+      { type: "ajouter", ustensile: "plaque", ingredient: "jambon",
+        texte: "Pose une tranche de jambon sur chacune." },
+      { type: "action",  ustensile: "plaque", action: "Étaler", fois: 2,
+        texte: "Étale un peu du mélange sur le jambon." },
+      { type: "ajouter", ustensile: "plaque", ingredient: "pain-de-mie",
+        texte: "Referme avec les 2 autres tranches de pain." },
+      { type: "action",  ustensile: "plaque", action: "Étaler", fois: 2,
+        texte: "Recouvre le dessus avec le reste du mélange." },
+
+      // --- La cuisson ---
+      { type: "action",  ustensile: "four", action: "Enfourner", fois: 1,
+        texte: "Enfourne la plaque." },
+      { type: "cuisson", ustensile: "four", duree: 600,
+        texte: "Laisse cuire 10 min, jusqu'à ce que le dessus soit doré et gratiné." },
+      { type: "action",  ustensile: "four", action: "Sortir", fois: 1,
+        texte: "Sors les croques. Attention, c'est chaud !" },
+      { type: "action",  ustensile: "plaque", action: "Servir", fois: 1,
+        texte: "Coupe-les en deux et sers, avec une petite salade si tu veux." }
+    ]
+  },
+
   // ---------- Recettes prévues (pas encore écrites) ----------
   // Rythme : 1 recette par palier, 2 tous les 5 niveaux, en alternant salé et sucré
-  { id: "croque-monsieur",    aVenir: true, nom: "Croque-monsieur",             categorie: "sale",  niveauRequis: 4 },
   { id: "carbonara",          aVenir: true, nom: "Carbonara",                   categorie: "sale",  niveauRequis: 5 },
   { id: "gateau-chocolat",    aVenir: true, nom: "Gâteau au chocolat",          categorie: "sucre", niveauRequis: 5 },
   { id: "tarte-pommes",       aVenir: true, nom: "Tarte aux pommes",            categorie: "sucre", niveauRequis: 7 },
