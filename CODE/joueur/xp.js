@@ -6,20 +6,29 @@
 // XP de base selon la difficulté (index = nombre d'étoiles)
 const XP_PAR_DIFFICULTE = [0, 20, 35, 55, 80, 120];
 
-// Un titre par niveau, au masculin (m) et au féminin (f)
+// Les titres, avec le niveau à partir duquel on les obtient.
+// Les paliers s'espacent : chaque titre se mérite plus que le précédent.
 const TITRES = [
-  { m: "Commis",         f: "Commise" },
-  { m: "Apprenti",       f: "Apprentie" },
-  { m: "Cuistot",        f: "Cuistote" },
-  { m: "Chef de partie", f: "Cheffe de partie" },
-  { m: "Sous-chef",      f: "Sous-cheffe" },
-  { m: "Chef",           f: "Cheffe" },
-  { m: "Chef étoilé",    f: "Cheffe étoilée" }
+  { niveau: 1,   m: "Commis",         f: "Commise" },
+  { niveau: 5,   m: "Apprenti",       f: "Apprentie" },
+  { niveau: 10,  m: "Cuistot",        f: "Cuistote" },
+  { niveau: 18,  m: "Chef de partie", f: "Cheffe de partie" },
+  { niveau: 30,  m: "Sous-chef",      f: "Sous-cheffe" },
+  { niveau: 50,  m: "Chef",           f: "Cheffe" },
+  { niveau: 75,  m: "Chef étoilé",    f: "Cheffe étoilée" },
+  { niveau: 100, m: "Chef 1 étoile",  f: "Cheffe 1 étoile" },
+  { niveau: 125, m: "Chef 2 étoiles", f: "Cheffe 2 étoiles" },
+  { niveau: 150, m: "Chef 3 étoiles", f: "Cheffe 3 étoiles" }
 ];
 
-// XP à gagner pour passer du niveau "niveau" au suivant : 70 × 1,25^(niveau − 1)
+// XP à gagner pour passer du niveau "niveau" au suivant :
+// - niveaux 1 à 5 : +25 % à chaque fois (70, 88, 109, 137, 171)
+// - ensuite : +10 XP par niveau, sans jamais dépasser 200 (≈ 3 repas par niveau)
 function xpPourNiveauSuivant(niveau) {
-  return Math.round(70 * Math.pow(1.25, niveau - 1));
+  if (niveau <= 5) {
+    return Math.round(70 * Math.pow(1.25, niveau - 1));
+  }
+  return Math.min(171 + 10 * (niveau - 5), 200);
 }
 
 // À partir de l'XP totale, calcule le niveau et la progression dans ce niveau.
@@ -38,15 +47,21 @@ function calculerNiveau(xpTotale) {
   };
 }
 
-// Titre du joueur (après le dernier titre, on le garde).
-// genre = "m" ou "f" : TITRES[index][genre] revient à écrire .m ou .f
+// Titre du joueur : le dernier palier atteint (après le dernier, on le garde).
+// genre = "m" ou "f" : titre[genre] revient à écrire titre.m ou titre.f
 function titreDuNiveau(niveau, genre) {
-  const index = Math.min(niveau, TITRES.length) - 1;
-  return TITRES[index][genre];
+  let titre = TITRES[0];
+  for (const t of TITRES) {
+    if (niveau >= t.niveau) titre = t;
+  }
+  return titre[genre];
 }
 
 // Bonus d'écart : une recette trop facile pour ton niveau rapporte moins
+// Il ne sert que pendant le déblocage des recettes (niveaux 1 à 5) :
+// dès le niveau 6, toutes sont débloquées et plus rien n'est pénalisé.
 function bonusEcart(niveauJoueur, niveauRecette) {
+  if (niveauJoueur >= 6) return 1;
   const ecart = niveauJoueur - niveauRecette;
   if (ecart <= 1) return 1;
   if (ecart === 2) return 0.75;

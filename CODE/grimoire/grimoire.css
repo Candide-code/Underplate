@@ -82,3 +82,27 @@
 #fiche-recap {
   margin-top: 20px;
 }
+
+/* ---------- Filtre : Mes recettes / Recettes du jeu ---------- */
+.grimoire-filtre {
+  display: flex;
+  flex-wrap: wrap;      /* sur un écran étroit, la 2e case passe dessous */
+  gap: 8px 20px;
+  margin-bottom: 12px;
+}
+
+.grimoire-filtre label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Des cases assez grandes pour le doigt, cochées à la couleur d'accent */
+.grimoire-filtre input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}

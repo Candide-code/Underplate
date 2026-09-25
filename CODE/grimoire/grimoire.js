@@ -10,7 +10,7 @@ function htmlRecap(recette) {
   const lignesIngredients = recette.ingredients
     .map(ligne => `<li><strong>${ingredients[ligne.id].nom}</strong> · ${ligne.quantite}</li>`)
     .join("");
-  const lignesUstensiles = recette.ustensiles.map(nom => `<li>${nom}</li>`).join("");
+  const lignesUstensiles = recette.ustensiles.map(id => `<li>${ustensiles[id].nom}</li>`).join("");
   const lignesEtapes = recette.etapes.map(etape => `<li>${etape.texte}</li>`).join("");
 
   return `
@@ -26,12 +26,23 @@ function htmlRecap(recette) {
 
 // Une ligne par recette, comme la table des matières d'un livre :
 // juste le nom (pas de rang ni de compteur, ça c'est pour l'écran Recettes)
+// Les recettes à montrer selon les cases cochées :
+// rien de coché ou les deux → tout ; une seule case → seulement ce groupe
+function recettesDuGrimoire() {
+  const perso = document.getElementById("filtre-perso").checked;
+  const jeu = document.getElementById("filtre-jeu").checked;
+  if (perso && !jeu) return joueur.recettesPerso;
+  if (jeu && !perso) return recettes;
+  return toutesLesRecettes(); // custom.js
+}
+
 function afficherGrimoire() {
   const liste = document.getElementById("liste-grimoire");
   liste.innerHTML = "";
   let decouvertes = 0;
+  const aMontrer = recettesDuGrimoire();
 
-  for (const recette of recettes) {
+  for (const recette of aMontrer) {
     const ligne = document.createElement("li");
     const bouton = document.createElement("button");
     bouton.className = "ligne-grimoire";
@@ -54,7 +65,7 @@ function afficherGrimoire() {
   }
 
   document.getElementById("grimoire-compte").textContent =
-    decouvertes + " / " + recettes.length + " recettes découvertes";
+    decouvertes + " / " + aMontrer.length + " recettes découvertes";
 
   afficherEcran("ecran-grimoire");
 }
@@ -85,3 +96,7 @@ function ouvrirFiche(recette) {
 document.getElementById("fiche-retour").addEventListener("click", afficherGrimoire);
 document.getElementById("fiche-cuisiner").addEventListener("click", () => ouvrirPreparation(recetteDeLaFiche));
 document.getElementById("grimoire-retour").addEventListener("click", afficherAccueil);
+
+// Cocher / décocher une case : la liste se met à jour tout de suite
+document.getElementById("filtre-perso").addEventListener("change", afficherGrimoire);
+document.getElementById("filtre-jeu").addEventListener("change", afficherGrimoire);

@@ -12,7 +12,8 @@ const recettes = [
   {
     id: "omelette",
     nom: "Omelette au fromage",
-    sprite: null,          // pas encore dessiné
+    categorie: "sale",     // "sale" ou "sucre" : dans quel menu elle apparaît
+    sprite: "assets/sprites/plats/omelette.png", // pack « Pixel Food » (ghostpixxells)
     initiale: "O",         // lettre du sprite temporaire
     difficulte: 1,         // de 1 à 5 étoiles
     niveauRequis: 1,       // niveau du joueur pour la débloquer
@@ -26,7 +27,7 @@ const recettes = [
       { id: "sel",     quantite: "1 pincée" },
       { id: "poivre",  quantite: "1 pincée" }
     ],
-    ustensiles: ["Bol", "Fourchette", "Poêle", "Spatule"],
+    ustensiles: ["bol", "fourchette", "poele", "spatule"], // identifiants du catalogue
 
     // Le déroulé, une étape par écran
     etapes: [
@@ -56,7 +57,8 @@ const recettes = [
   {
     id: "pates-tomate",
     nom: "Pâtes à la sauce tomate",
-    sprite: null,
+    categorie: "sale",
+    sprite: "assets/sprites/plats/pates-tomate.png",
     initiale: "P",
     difficulte: 1,
     niveauRequis: 1,
@@ -71,7 +73,7 @@ const recettes = [
       { id: "eau",     quantite: "1 L" },
       { id: "basilic", quantite: "quelques feuilles (facultatif)" }
     ],
-    ustensiles: ["Casserole", "Poêle", "Cuillère en bois", "Passoire"],
+    ustensiles: ["casserole", "poele", "cuillere", "passoire"],
 
     // La sauce se prépare pendant que l'eau chauffe, puis mijote
     // pendant que les pâtes cuisent : on passe d'un ustensile à l'autre.

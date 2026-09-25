@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Petit Chef</title>
+  <title>Underplate</title>
 
   <!-- Polices pixel (Google Fonts) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="cuisine/cuisine.css">
   <link rel="stylesheet" href="fin-recette/fin-recette.css">
   <link rel="stylesheet" href="grimoire/grimoire.css">
+  <link rel="stylesheet" href="custom/custom.css">
 </head>
 <body>
 
@@ -50,6 +51,10 @@
         GRIMOIRE ▶
         <span class="menu-sous-titre">Relire les recettes déjà cuisinées</span>
       </button>
+      <button id="menu-custom" class="bouton bouton-large bouton-menu">
+        CUSTOM ▶
+        <span class="menu-sous-titre">Tes propres recettes</span>
+      </button>
     </nav>
   </main>
 
@@ -76,14 +81,193 @@
     <button id="creation-valider" class="bouton bouton-large">C'EST PARTI ▶</button>
   </main>
 
-  <!-- ===== RECETTES : une carte par recette ===== -->
+  <!-- ===== RECETTES et CUSTOM : on choisit d'abord salé ou sucré =====
+       Le même écran sert aux deux : le titre change selon d'où on vient -->
+  <main id="ecran-categories" class="ecran" hidden>
+    <div class="barre-haut">
+      <button id="categories-retour" class="bouton-icone" aria-label="Retour à l'accueil">←</button>
+      <h2 id="categories-titre">Tes recettes</h2>
+    </div>
+    <nav class="menu-accueil">
+      <button id="categorie-sale" class="bouton bouton-large bouton-menu bouton-clair">
+        SALÉ ▶
+        <span class="menu-sous-titre">Plats du midi et du soir</span>
+      </button>
+      <button id="categorie-sucre" class="bouton bouton-large bouton-menu bouton-clair">
+        SUCRÉ ▶
+        <span class="menu-sous-titre">Desserts et goûters</span>
+      </button>
+    </nav>
+  </main>
+
+  <!-- ===== GRILLE : une carte par recette de la catégorie choisie ===== -->
   <main id="ecran-recettes" class="ecran" hidden>
     <div class="barre-haut">
-      <button id="recettes-retour" class="bouton-icone" aria-label="Retour à l'accueil">←</button>
-      <h2>Tes recettes</h2>
+      <button id="recettes-retour" class="bouton-icone" aria-label="Retour au choix salé ou sucré">←</button>
+      <h2 id="recettes-titre">Salé</h2>
+      <!-- + : créer une recette (seulement dans CUSTOM) -->
+      <button id="recettes-ajouter" class="bouton-icone bouton-plus" aria-label="Créer une recette" hidden>+</button>
     </div>
+    <!-- Affiché seulement si la catégorie n'a encore aucune recette -->
+    <p id="recettes-vide" class="recettes-vide" hidden></p>
     <!-- Les cartes sont créées par accueil.js à partir de la liste des recettes -->
     <section id="grille-recettes" class="grille-recettes"></section>
+  </main>
+
+  <!-- ===== ASSISTANT CUSTOM : créer une recette en 5 étapes =====
+       Un seul écran, 5 "pages" (.page-assistant) : une seule visible à la fois -->
+  <main id="ecran-assistant" class="ecran" hidden>
+    <div class="barre-haut">
+      <button id="assistant-quitter" class="bouton-icone" aria-label="Abandonner la recette">✕</button>
+      <h2 id="assistant-titre">Nouvelle recette</h2>
+    </div>
+    <p id="assistant-progression" class="assistant-progression"></p>
+    <div id="assistant-pastilles" class="pastilles"></div>
+
+    <!-- Page 1 : les infos -->
+    <section class="page-assistant cadre" data-page="1">
+      <h3>Infos</h3>
+      <label class="champ">
+        <span class="champ-nom">Nom de la recette</span>
+        <input id="assistant-nom" class="champ-texte" type="text" maxlength="30" autocomplete="off" placeholder="ex. Chili con carne">
+      </label>
+      <div class="champ">
+        <span class="champ-nom">Difficulté</span>
+        <div class="choix-fleches">
+          <button id="difficulte-moins" class="bouton-fleche" aria-label="Moins difficile">◀</button>
+          <span id="assistant-difficulte" class="choix-valeur"></span>
+          <button id="difficulte-plus" class="bouton-fleche" aria-label="Plus difficile">▶</button>
+        </div>
+        <span id="assistant-xp" class="champ-aide"></span>
+      </div>
+      <label class="champ">
+        <span class="champ-nom">Temps total (minutes)</span>
+        <!-- inputmode="numeric" : le téléphone affiche le clavier des chiffres -->
+        <input id="assistant-temps" class="champ-texte champ-court" type="number" min="1" max="600" inputmode="numeric">
+      </label>
+    </section>
+
+    <!-- Pages 2 à 5 : remplies aux prochaines étapes du développement -->
+    <!-- Page 2 : les ingrédients et leur quantité -->
+    <section class="page-assistant cadre" data-page="2">
+      <h3>Ingrédients</h3>
+      <span class="champ-nom champ">Tes ingrédients</span>
+      <!-- Une ligne par ingrédient choisi, créée par assistant.js -->
+      <ul id="assistant-ingredients" class="liste-choisis"></ul>
+      <p id="assistant-ingredients-vide" class="champ-aide">Aucun pour l'instant : touche un ingrédient en dessous.</p>
+
+      <label class="champ">
+        <span class="champ-nom">Ajouter un ingrédient</span>
+        <input id="assistant-recherche" class="champ-texte" type="search" autocomplete="off" placeholder="Chercher ou créer…">
+      </label>
+      <!-- Apparaît quand ce qu'on tape n'existe pas dans le jeu :
+           on choisit la famille où le ranger, puis CRÉER -->
+      <div id="assistant-creer" class="panneau-creer" hidden>
+        <p id="assistant-creer-texte" class="panneau-creer-texte"></p>
+        <div class="choix-fleches">
+          <button id="creer-famille-moins" class="bouton-fleche" aria-label="Famille précédente">◀</button>
+          <span id="creer-famille" class="choix-valeur valeur-famille"></span>
+          <button id="creer-famille-plus" class="bouton-fleche" aria-label="Famille suivante">▶</button>
+        </div>
+        <button id="assistant-creer-ingredient" class="bouton bouton-creer">+ CRÉER</button>
+      </div>
+
+      <!-- Sous-menu : un bouton par famille (Légumes, Viandes…), créés par assistant.js -->
+      <div id="assistant-familles" class="familles"></div>
+
+      <!-- Une famille ouverte : ← Familles + son nom, puis ses tuiles -->
+      <div id="assistant-famille-haut" class="famille-haut" hidden>
+        <button id="assistant-familles-retour" class="bouton-fleche" aria-label="Retour aux familles">←</button>
+        <span id="assistant-famille-nom" class="famille-nom"></span>
+      </div>
+      <div id="assistant-catalogue" class="catalogue"></div>
+    </section>
+    <!-- Page 3 : les ustensiles et l'électroménager -->
+    <section class="page-assistant cadre" data-page="3">
+      <h3>Ustensiles</h3>
+      <span class="champ-nom champ">Tes ustensiles</span>
+      <!-- Une ligne par ustensile choisi, créée par assistant.js -->
+      <ul id="assistant-ustensiles" class="liste-choisis"></ul>
+      <p id="assistant-ustensiles-vide" class="champ-aide">Aucun pour l'instant : touche un ustensile en dessous.</p>
+
+      <label class="champ">
+        <span class="champ-nom">Ajouter un ustensile</span>
+        <input id="assistant-recherche-ustensile" class="champ-texte" type="search" autocomplete="off" placeholder="Chercher ou créer…">
+      </label>
+
+      <!-- Ce qu'on tape n'existe pas : on choisit son groupe, puis CRÉER -->
+      <div id="assistant-creer-ustensile" class="panneau-creer" hidden>
+        <p id="creer-ustensile-texte" class="panneau-creer-texte"></p>
+        <div class="choix-fleches">
+          <button id="creer-groupe-moins" class="bouton-fleche" aria-label="Groupe précédent">◀</button>
+          <span id="creer-groupe" class="choix-valeur valeur-famille"></span>
+          <button id="creer-groupe-plus" class="bouton-fleche" aria-label="Groupe suivant">▶</button>
+        </div>
+        <button id="creer-ustensile-ok" class="bouton bouton-creer">+ CRÉER</button>
+      </div>
+
+      <!-- Sous-menu : un bouton par groupe (Poêles & casseroles…), créés par assistant.js -->
+      <div id="assistant-groupes" class="familles"></div>
+
+      <!-- Un groupe ouvert : ← + son nom, puis ses tuiles -->
+      <div id="assistant-groupe-haut" class="famille-haut" hidden>
+        <button id="assistant-groupes-retour" class="bouton-fleche" aria-label="Retour aux groupes">←</button>
+        <span id="assistant-groupe-nom" class="famille-nom"></span>
+      </div>
+      <div id="assistant-catalogue-ustensiles" class="catalogue"></div>
+    </section>
+    <!-- Page 4 : les étapes, dans l'ordre -->
+    <section class="page-assistant cadre" data-page="4">
+      <h3>Étapes</h3>
+      <!-- Une ligne par étape, créée par assistant.js -->
+      <ol id="assistant-etapes" class="liste-etapes"></ol>
+      <p id="assistant-etapes-vide" class="champ-aide">Aucune étape pour l'instant.</p>
+
+      <button id="etape-nouvelle" class="bouton bouton-creer">+ AJOUTER UNE ÉTAPE</button>
+
+      <!-- L'éditeur d'une étape (nouvelle ou modifiée) -->
+      <div id="editeur-etape" class="panneau-creer" hidden>
+        <p id="editeur-titre" class="panneau-creer-texte"></p>
+
+        <!-- Chaque réglage : Nom ◀ valeur ▶ (lignes créées par assistant.js) -->
+        <div id="editeur-reglages"></div>
+
+        <label class="champ">
+          <span class="champ-nom">Consigne</span>
+          <textarea id="editeur-texte" class="champ-texte champ-consigne" rows="3" maxlength="200"></textarea>
+        </label>
+
+        <button id="editeur-enregistrer" class="bouton bouton-creer">✓ ENREGISTRER L'ÉTAPE</button>
+        <button id="editeur-annuler" class="bouton-lien">Annuler</button>
+      </div>
+    </section>
+    <!-- Page 5 : le récap, présenté comme la fiche du Grimoire -->
+    <section class="page-assistant cadre" data-page="5">
+      <h3>Récap</h3>
+      <div class="prepa-resume recap-entete">
+        <div id="assistant-recap-sprite"></div>
+        <div>
+          <p id="assistant-recap-nom" class="recap-nom"></p>
+          <p id="assistant-recap-infos"></p>
+        </div>
+      </div>
+      <!-- Ingrédients, ustensiles, étapes : même HTML que le Grimoire (htmlRecap) -->
+      <div id="assistant-recap" class="recap"></div>
+      <p class="champ-aide">Tout est bon ? Touche « AJOUTER ✓ ». Sinon, ◀ PRÉC. pour corriger.</p>
+    </section>
+
+    <div class="assistant-navigation">
+      <button id="assistant-precedent" class="bouton">◀ PRÉC.</button>
+      <button id="assistant-suivant" class="bouton">SUIVANT ▶</button>
+    </div>
+
+    <!-- Confirmation avant d'abandonner (même principe que "Quitter la recette") -->
+    <dialog id="confirmer-abandon" class="dialogue fenetre">
+      <p id="abandon-question">* Abandonner cette recette ?</p>
+      <p id="abandon-explication">* Ce que tu as rempli sera perdu.</p>
+      <button id="abandon-non" class="bouton bouton-large">CONTINUER ▶</button>
+      <button id="abandon-oui" class="bouton-lien">Abandonner</button>
+    </dialog>
   </main>
 
   <!-- ===== GRIMOIRE : les recettes déjà cuisinées ===== -->
@@ -91,6 +275,11 @@
     <div class="barre-haut">
       <button id="grimoire-retour" class="bouton-icone" aria-label="Retour à l'accueil">←</button>
       <h2>Grimoire</h2>
+    </div>
+    <!-- Filtre : rien de coché ou les deux = tout ; une seule case = ce groupe -->
+    <div class="grimoire-filtre">
+      <label><input id="filtre-perso" type="checkbox"> Mes recettes</label>
+      <label><input id="filtre-jeu" type="checkbox"> Recettes du jeu</label>
     </div>
     <p id="grimoire-compte" class="grimoire-compte"></p>
     <!-- La liste est créée par grimoire.js -->
@@ -133,6 +322,19 @@
     <ul id="prepa-ustensiles" class="liste-a-cocher cadre"></ul>
 
     <button id="prepa-commencer" class="bouton bouton-large">COMMENCER ▶</button>
+
+    <!-- Seulement pour une recette perso (CUSTOM) : la modifier ou la supprimer -->
+    <div id="prepa-perso" hidden>
+      <button id="prepa-modifier" class="bouton bouton-large bouton-clair-simple">✏️ MODIFIER</button>
+      <button id="prepa-supprimer" class="bouton-lien">Supprimer cette recette</button>
+    </div>
+
+    <dialog id="confirmer-suppression" class="dialogue fenetre">
+      <p>* Supprimer cette recette ?</p>
+      <p>* Elle disparaîtra de CUSTOM et du Grimoire, avec son compteur.</p>
+      <button id="suppression-non" class="bouton bouton-large">GARDER ▶</button>
+      <button id="suppression-oui" class="bouton-lien">Supprimer</button>
+    </dialog>
   </main>
 
   <!-- ===== 3. CUISINE ===== -->
@@ -218,6 +420,7 @@
   <script src="joueur/xp.js"></script>
   <script src="joueur/joueur.js"></script>
   <script src="chef/chef.js"></script>
+  <script src="custom/custom.js"></script>
   <script src="sauvegarde/sauvegarde.js"></script>
   <script src="accueil/accueil.js"></script>
   <script src="preparation/preparation.js"></script>
@@ -225,6 +428,7 @@
   <script src="fin-recette/fin-recette.js"></script>
   <script src="grimoire/grimoire.js"></script>
   <script src="chef/creation.js"></script>
+  <script src="custom/assistant.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

@@ -50,7 +50,7 @@ document.getElementById("quitter-oui").addEventListener("click", () => {
   fenetreQuitter.close();
   arreterMinuteur();
   laisserEcranSEteindre();
-  afficherRecettes();
+  afficherRecettes(cuisine.recette.categorie, cuisine.recette.perso ? "perso" : "jeu");
 });
 
 // ---------- Afficher l'étape en cours ----------

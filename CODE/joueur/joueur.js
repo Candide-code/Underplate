@@ -7,7 +7,13 @@ let joueur = {
   xp: 0,
   recettesFaites: {}, // ex. { omelette: 3 } = omelette faite 3 fois
   grimoireLu: [],     // recettes dont on a déjà ouvert la fiche du Grimoire
-  chef: null          // le perso (pseudo, genre, peau…) ; null = pas encore créé
+  chef: null,         // le perso (pseudo, genre, peau…) ; null = pas encore créé
+
+  // CUSTOM : ce que le joueur a créé lui-même (voir custom/custom.js)
+  recettesPerso: [],    // ses recettes, au même format que celles du jeu
+  ingredientsPerso: {}, // les ingrédients tapés à la main, ex. { "perso-chorizo": { nom: "Chorizo", sprite: null } }
+  ustensilesPerso: {},  // pareil pour les ustensiles
+  nomsIngredients: {}   // ingrédients du jeu renommés, ex. { oeuf: "Œufs frais" }
 };
 
 // Nombre de fois que le joueur a fini une recette (0 si jamais)
@@ -22,7 +28,8 @@ function estNouveauDansGrimoire(idRecette) {
 
 // Y a-t-il au moins une nouvelle page ? (pour le badge du bouton GRIMOIRE)
 function grimoireANouveautes() {
-  return recettes.some(recette => estNouveauDansGrimoire(recette.id));
+  // toutesLesRecettes (custom.js) : celles du jeu ET celles du joueur
+  return toutesLesRecettes().some(recette => estNouveauDansGrimoire(recette.id));
 }
 
 // Met à jour l'en-tête : niveau, titre, barre et texte d'XP

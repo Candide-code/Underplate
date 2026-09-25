@@ -24,4 +24,4 @@ if (joueur.chef === null) {
   afficherAccueil();
 }
 
-console.log("Petit Chef est prêt !", joueur);
+console.log("Underplate est prêt !", joueur);

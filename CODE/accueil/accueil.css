@@ -54,8 +54,10 @@
 
 .menu-sous-titre {
   display: block;
-  margin-top: 10px;
+  margin-top: 8px;
   font-family: var(--police-texte);
+  font-weight: 400;  /* le sous-titre reste fin, sous le titre en gras */
+  letter-spacing: 0;
   font-size: 16px;
 }
 
@@ -278,4 +280,32 @@
 .carte-recette.verrouillee .sprite-temp {
   background: var(--boite);
   color: var(--texte-2);
+}
+
+/* Catégorie encore vide (ex. Sucré avant les cookies) */
+.recettes-vide {
+  margin: 24px 0;
+  text-align: center;
+  color: var(--texte-2);
+}
+
+/* Boutons SALÉ / SUCRÉ : jaune doux (Sweetie 16), plus clair que
+   l'orange de RECETTES / GRIMOIRE pour marquer le sous-menu.
+   Titre en Pixelify Sans gras : Press Start 2P écrase les majuscules
+   accentuées (le É de SALÉ sortait plus petit que les autres lettres). */
+.bouton-clair {
+  background: var(--xp);
+  font-family: var(--police-texte);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+
+/* Bouton + (CUSTOM) : tout à droite de la barre du haut */
+.bouton-plus {
+  margin-left: auto;
+  font-family: var(--police-titre);
+  font-size: 18px;
+  background: var(--xp);
+  color: #1a1c2c;
 }

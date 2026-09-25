@@ -50,7 +50,13 @@ document.getElementById("fin-jai-fini").addEventListener("click", () => {
   let lignes = [];
   if (apres.niveau > avant.niveau) {
     lignes.push("* Tu te sens plus " + accord("fort", "forte") + ". Niveau " + apres.niveau + " !");
-    lignes.push("* Tu es maintenant " + titreDuNiveau(apres.niveau, chefActuel().genre) + ".");
+    // Le titre ne change qu'à certains paliers (5, 10, 18…) : on ne l'annonce que s'il change
+    const genre = chefActuel().genre;
+    const titreAvant = titreDuNiveau(avant.niveau, genre);
+    const titreApres = titreDuNiveau(apres.niveau, genre);
+    if (titreApres !== titreAvant) {
+      lignes.push("* Nouveau titre : " + titreApres + " !");
+    }
     const debloquees = recettes.filter(r => r.niveauRequis > avant.niveau && r.niveauRequis <= apres.niveau);
     for (const r of debloquees) {
       lignes.push("* Nouvelle recette : " + r.nom + " !");

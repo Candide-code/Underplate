@@ -7,6 +7,9 @@ let recetteChoisie = null;
 function ouvrirPreparation(recette) {
   recetteChoisie = recette;
 
+  // MODIFIER / Supprimer : seulement pour une recette perso (voir custom/assistant.js)
+  document.getElementById("prepa-perso").hidden = !recette.perso;
+
   const niveauJoueur = calculerNiveau(joueur.xp).niveau;
   const fois = nombreDeFois(recette.id);
   const xp = calculerXpGagnee(recette, niveauJoueur, fois);
@@ -41,12 +44,14 @@ function ouvrirPreparation(recette) {
   // Ustensiles
   const listeUstensiles = document.getElementById("prepa-ustensiles");
   listeUstensiles.innerHTML = "";
-  for (const nom of recette.ustensiles) {
-    listeUstensiles.innerHTML += `<li><label><input type="checkbox"> ${nom}</label></li>`;
+  for (const id of recette.ustensiles) {
+    listeUstensiles.innerHTML += `<li><label><input type="checkbox"> ${ustensiles[id].nom}</label></li>`;
   }
 
   afficherEcran("ecran-preparation");
 }
 
-document.getElementById("prepa-retour").addEventListener("click", afficherRecettes);
+// ← : retour à la grille de la catégorie de cette recette (salé ou sucré)
+document.getElementById("prepa-retour").addEventListener("click", () =>
+  afficherRecettes(recetteChoisie.categorie, recetteChoisie.perso ? "perso" : "jeu"));
 document.getElementById("prepa-commencer").addEventListener("click", () => demarrerCuisine(recetteChoisie));

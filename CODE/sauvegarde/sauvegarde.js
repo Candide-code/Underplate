@@ -4,6 +4,8 @@
 // Il ne stocke que du texte, d'où JSON.stringify / JSON.parse.
 // ==========================================================
 
+// Nom de la case de rangement dans le navigateur. Il date de l'ancien nom
+// de l'app (Petit Chef) : on le garde, sinon les joueurs perdraient leur progression.
 const CLE_SAUVEGARDE = "petit-chef-sauvegarde";
 
 function sauvegarder() {
@@ -29,6 +31,14 @@ function charger() {
     if (joueur.chef === undefined) {
       joueur.chef = null;
     }
+    // Sauvegarde d'avant CUSTOM : pas encore de recettes perso
+    if (!joueur.recettesPerso)    joueur.recettesPerso = [];
+    if (!joueur.ingredientsPerso) joueur.ingredientsPerso = {};
+    if (!joueur.ustensilesPerso)  joueur.ustensilesPerso = {};
+    if (!joueur.nomsIngredients)  joueur.nomsIngredients = {};
+
+    // Les ingrédients et ustensiles tapés à la main rejoignent les catalogues du jeu
+    brancherCataloguesPerso();
   } catch (erreur) {
     console.warn("Chargement impossible :", erreur);
   }

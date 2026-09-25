@@ -44,6 +44,13 @@
   color: var(--texte);
 }
 
+/* Un vrai dessin (bol, poêle…) : carré, sans fond, pour ne pas être déformé */
+#cuisine-ustensile img.sprite {
+  width: 128px;
+  height: 128px;
+  background: none;
+}
+
 /* Les ingrédients déjà ajoutés */
 .contenu-ustensile {
   display: flex;

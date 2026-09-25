@@ -1,0 +1,344 @@
+/* ==========================================================
+   CUSTOM : l'assistant de création de recette
+   ========================================================== */
+
+.assistant-progression {
+  margin: 0 0 8px;
+  font-family: var(--police-titre);
+  font-size: 12px;
+}
+
+.page-assistant h3 {
+  margin: 0 0 4px;
+}
+
+/* ---------- Les champs d'un formulaire ---------- */
+
+.champ {
+  display: block;   /* un <label> est "en ligne" par défaut : on le met sur sa propre ligne */
+  margin-top: 16px;
+}
+
+.champ-nom {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--police-titre);
+  font-size: 10px;
+  color: var(--texte-2);
+}
+
+.champ-texte {
+  width: 100%;
+  padding: 10px;
+  font-family: var(--police-texte);
+  font-size: 18px;
+  color: var(--texte);
+  background: var(--fond);
+  border: var(--pixel) solid var(--texte);
+}
+
+.champ-texte:focus {
+  outline: var(--pixel) dashed var(--accent);
+  outline-offset: var(--pixel);
+}
+
+.champ-court {
+  width: 8em;
+}
+
+/* Petit texte d'explication sous un champ */
+.champ-aide {
+  display: block;
+  margin-top: 6px;
+  color: var(--texte-2);
+}
+
+/* ◀ valeur ▶ (les flèches viennent de chef.css) */
+.choix-fleches {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.choix-valeur {
+  flex: 1;
+  text-align: center;
+  font-family: var(--police-titre);
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+/* ---------- ◀ PRÉC. / SUIVANT ▶ ---------- */
+
+/* 2 colonnes de même largeur (1fr 1fr) */
+.assistant-navigation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* ---------- Page 2 : ingrédients ---------- */
+
+/* La liste de ce qu'on a choisi */
+.liste-choisis {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Un bloc par ingrédient, séparé du suivant par un trait pointillé */
+.ligne-choisie {
+  padding: 10px 0;
+  border-bottom: 2px dashed var(--texte-2);
+}
+
+/* 1re ligne : sprite | nom (le reste de la place) | ✏️ | ✕ */
+.ligne-haut {
+  display: grid;
+  grid-template-columns: 32px 1fr 36px 44px;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 2e ligne : ◀ nombre ▶   ◀ unité ▶
+   flex-wrap : sur un écran étroit, l'unité passe sous le nombre */
+.ligne-quantite {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 8px;
+}
+
+.ligne-quantite .choix-fleches {
+  flex: 1 1 140px; /* chaque sélecteur fait au moins 140 px */
+}
+
+.ligne-quantite .choix-valeur {
+  font-family: var(--police-texte);
+  font-size: 18px;
+  letter-spacing: 0;
+}
+
+/* Sans ça, display: flex l'emporterait sur l'attribut hidden (« au goût ») */
+.choix-fleches[hidden] {
+  display: none;
+}
+
+/* Flèches un peu plus petites dans les lignes d'ingrédients */
+.petite-fleche {
+  flex: none;    /* ne rétrécit jamais, même si la place manque */
+  width: 36px;
+  height: 36px;
+  font-size: 12px;
+}
+
+.ligne-choisie .sprite {
+  width: 32px;
+  height: 32px;
+  font-size: 10px;
+  border-width: 2px;
+}
+
+.ligne-nom {
+  min-width: 0;           /* un nom long passe à la ligne au lieu de déborder */
+  overflow-wrap: anywhere;
+}
+
+
+/* Les tuiles du catalogue : autant de colonnes de 84 px que la largeur permet */
+.catalogue {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* Bouton « + CRÉER » du panneau */
+.bouton-creer {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  background: var(--xp);
+  font-family: var(--police-texte);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* ---------- Page 2 : le sous-menu des familles ---------- */
+
+.familles {
+  margin-top: 12px;
+}
+
+/* Un bouton par famille, pleine largeur. Pixelify Sans : Press Start 2P
+   écrase les majuscules accentuées (LÉGUMES, ÉPICES, ŒUFS…) */
+.bouton-famille {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  text-align: left;
+  background: var(--xp);
+  font-family: var(--police-texte);
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.famille-nombre {
+  font-weight: 400;
+}
+
+/* Famille vide : grisée, pas d'ombre */
+.bouton-famille:disabled {
+  background: var(--fond);
+  color: var(--texte-2);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* « ← Légumes » au-dessus des tuiles d'une famille */
+.famille-haut {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* display: flex l'emporterait sur l'attribut hidden */
+.famille-haut[hidden],
+.catalogue[hidden],
+.familles[hidden] {
+  display: none;
+}
+
+.famille-nom {
+  font-family: var(--police-texte);
+  font-weight: 700;
+  font-size: 18px;
+}
+
+/* ---------- Panneau « Créer … dans : ◀ famille ▶ [+ CRÉER] » ---------- */
+.panneau-creer {
+  margin-top: 12px;
+  padding: 12px;
+  border: 2px dashed var(--texte);
+}
+
+.panneau-creer[hidden] {
+  display: none;
+}
+
+.panneau-creer-texte {
+  margin: 0 0 8px;
+  overflow-wrap: anywhere;
+}
+
+/* Nom de famille en Pixelify (majuscules accentuées : Légumes, Épicerie…) */
+.valeur-famille {
+  font-family: var(--police-texte);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0;
+}
+
+
+/* Mode « renommer » : [ champ ] ✓ */
+.ligne-renommer {
+  display: grid;
+  grid-template-columns: 1fr 44px;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ligne-renommer[hidden] {
+  display: none;
+}
+
+.champ-renommer {
+  padding: 8px;
+  font-size: 16px;
+}
+
+/* ---------- Page 3 : ustensiles ---------- */
+
+/* Ligne sans bouton ✏️ : sprite | nom | ✕ */
+.ligne-haut-simple {
+  grid-template-columns: 32px 1fr 44px;
+}
+
+
+/* ---------- Page 4 : étapes ---------- */
+
+.liste-etapes {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+/* Une étape : résumé, consigne, puis les boutons ↑ ↓ ✏️ ✕ */
+.ligne-etape {
+  padding: 10px 0;
+  border-bottom: 2px dashed var(--texte-2);
+}
+
+.etape-resume {
+  margin: 0;
+  font-family: var(--police-texte);
+  font-weight: 700;
+  font-size: 17px;
+  overflow-wrap: anywhere;
+}
+
+.etape-texte {
+  margin: 4px 0 0;
+  color: var(--texte-2);
+  overflow-wrap: anywhere;
+}
+
+.etape-boutons {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* ↑ grisé sur la 1re étape, ↓ sur la dernière */
+.etape-boutons .bouton-fleche:disabled {
+  opacity: 0.35;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.champ-consigne {
+  resize: vertical;
+  font-size: 16px;
+}
+
+/* L'éditeur ne s'affiche que quand on ajoute ou modifie une étape */
+#editeur-etape[hidden],
+#etape-nouvelle[hidden] {
+  display: none;
+}
+
+#editeur-reglages .valeur-editeur {
+  font-size: 17px;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Page 5 : récap ---------- */
+.recap-entete {
+  margin: 8px 0 16px;
+}
+
+.recap-nom {
+  font-family: var(--police-texte);
+  font-weight: 700;
+  font-size: 20px;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Écran de préparation d'une recette perso ---------- */
+
+/* ✏️ MODIFIER : jaune doux, pour le distinguer de COMMENCER (orange) */
+.bouton-clair-simple {
+  background: var(--xp);
+}
