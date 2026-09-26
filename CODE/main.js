@@ -24,6 +24,9 @@ if (joueur.chef === null) {
   afficherAccueil();
 }
 
+// Des recettes arrivées avec une mise à jour ? On les annonce (nouveautes.js)
+verifierNouveautes();
+
 // App installable : on lance le service worker (jeu hors ligne + mises à jour).
 // Il ne marche que sur un vrai serveur (GitHub Pages), pas en ouvrant le fichier.
 if ("serviceWorker" in navigator && location.protocol !== "file:") {

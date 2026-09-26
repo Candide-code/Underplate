@@ -8,6 +8,7 @@ let joueur = {
   recettesFaites: {}, // ex. { omelette: 3 } = omelette faite 3 fois
   grimoireLu: [],     // recettes dont on a déjà ouvert la fiche du Grimoire
   chef: null,         // le perso (pseudo, genre, peau…) ; null = pas encore créé
+  recettesConnues: null, // recettes du jeu déjà annoncées (voir nouveautes/nouveautes.js)
 
   // CUSTOM : ce que le joueur a créé lui-même (voir custom/custom.js)
   recettesPerso: [],    // ses recettes, au même format que celles du jeu

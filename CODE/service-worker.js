@@ -34,16 +34,57 @@ const FICHIERS_DE_BASE = [
   "cuisine/cuisine.css", "cuisine/cuisine.js",
   "fin-recette/fin-recette.css", "fin-recette/fin-recette.js",
   "grimoire/grimoire.css", "grimoire/grimoire.js",
+  "nouveautes/nouveautes.js",
   "assets/icones/icone-192.png", "assets/icones/icone-512.png"
 ];
 
-// Installation : on remplit le cache avec les fichiers de base
+const POLICES = "https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;700&display=swap";
+
+// Les catalogues du jeu (ils n'utilisent pas la page) : on y lit la liste
+// de tous les sprites, pour ne pas avoir à la tenir à la main ici
+importScripts("recettes/ingredients.js", "recettes/recettes.js", "chef/chef.js");
+
+function tousLesSprites() {
+  const fichiers = new Set();
+  for (const i of Object.values(ingredients)) if (i.sprite) fichiers.add(i.sprite);
+  for (const u of Object.values(ustensiles)) if (u.sprite) fichiers.add(u.sprite);
+  for (const r of recettes) if (r.sprite) fichiers.add(r.sprite);
+
+  // Le chef : chaque couche possible (voir htmlChef dans chef.js)
+  const couches = ["veste", "toque"];
+  for (const p of CHOIX_CHEF.peau) couches.push("peau-" + deuxChiffres(p.id));
+  for (const y of CHOIX_CHEF.yeux) couches.push("yeux-" + y.id);
+  for (const t of CHOIX_CHEF.tablier) couches.push("tablier-" + t.id);
+  for (const c of CHOIX_CHEF.coupe) {
+    for (const n of CHOIX_CHEF.cheveux) couches.push("cheveux-" + c.id + "-" + deuxChiffres(n.id));
+  }
+  for (const couche of couches) fichiers.add(DOSSIER_CHEF + couche + ".png");
+  return [...fichiers];
+}
+
+// Les polices Google : la feuille de style, puis chaque fichier de police qu'elle cite
+async function garderPolices(cache) {
+  const reponse = await fetch(POLICES);
+  if (!reponse.ok) return;
+  await cache.put(POLICES, reponse.clone());
+  const css = await reponse.text();
+  const adresses = [...css.matchAll(/url\((https:[^)]+)\)/g)].map(m => m[1]);
+  await Promise.all(adresses.map(adresse => cache.add(adresse).catch(() => {})));
+}
+
+// Installation : on garde tout ce qu'il faut pour jouer hors ligne.
+// Le code doit être complet (sinon l'installation échoue et on réessaiera) ;
+// un sprite ou une police qui ne vient pas n'empêche pas l'installation.
 self.addEventListener("install", evenement => {
-  evenement.waitUntil(
-    caches.open(CACHE)
-      .then(cache => cache.addAll(FICHIERS_DE_BASE))
-      .then(() => self.skipWaiting()) // pas besoin d'attendre la fermeture des onglets
-  );
+  evenement.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    await cache.addAll(FICHIERS_DE_BASE);
+    await Promise.all([
+      ...tousLesSprites().map(sprite => cache.add(sprite).catch(() => {})),
+      garderPolices(cache).catch(() => {})
+    ]);
+    await self.skipWaiting(); // pas besoin d'attendre la fermeture des onglets
+  })());
 });
 
 // Activation : le service worker prend la main tout de suite
