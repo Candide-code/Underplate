@@ -25,15 +25,14 @@ function verifierNouveautes() {
   const nouvelles = recettesEcrites().filter(recette => !joueur.recettesConnues.includes(recette.id));
   if (nouvelles.length === 0) return;
 
-  const niveau = calculerNiveau(joueur.xp).niveau;
-  const lignes = [nouvelles.length === 1 ? "* Nouvelle recette au menu !" : "* Nouvelles recettes au menu !"];
-  for (const recette of nouvelles) {
-    const categorie = recette.categorie === "sucre" ? "sucré" : "salé";
-    const quand = niveau >= recette.niveauRequis
-      ? "prête à cuisiner !"
-      : "dès le niveau " + recette.niveauRequis + ".";
-    lignes.push("* " + recette.nom + " (" + categorie + ") : " + quand);
-  }
+  // On garde la surprise : pas de nom, juste l'annonce
+  const lignes = [
+    "* Du nouveau dans la cuisine…",
+    nouvelles.length === 1
+      ? "* Une nouvelle recette est arrivée !"
+      : "* " + nouvelles.length + " nouvelles recettes sont arrivées !",
+    "* Va jeter un œil dans RECETTES."
+  ];
   document.getElementById("nouveautes-texte").innerHTML = lignes.map(l => `<p>${l}</p>`).join("");
 
   // On ne les annonce qu'une fois
