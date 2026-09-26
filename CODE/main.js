@@ -24,4 +24,11 @@ if (joueur.chef === null) {
   afficherAccueil();
 }
 
+// App installable : on lance le service worker (jeu hors ligne + mises à jour).
+// Il ne marche que sur un vrai serveur (GitHub Pages), pas en ouvrant le fichier.
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  navigator.serviceWorker.register("service-worker.js")
+    .catch(erreur => console.warn("Service worker impossible :", erreur));
+}
+
 console.log("Underplate est prêt !", joueur);

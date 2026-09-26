@@ -360,6 +360,110 @@ const recettes = [
   },
 
   {
+    id: "gyozas-poulet",
+    nom: "Gyozas au poulet maison",
+    categorie: "sale",
+    sprite: "assets/sprites/plats/gyozas-poulet.png", // dumplings du pack « Pixel Food » (ghostpixxells)
+    initiale: "G",
+    difficulte: 2,
+    niveauRequis: 3,
+    temps: 60,
+
+    // Recette perso : farce maison dans des feuilles achetées. Avec 700 g de
+    // poulet on en fait beaucoup : on cuit ce qu'on mange, le reste va au congélateur.
+    // La sauce se prépare juste avant la cuisson, pour servir les gyozas bien chauds.
+    ingredients: [
+      { id: "poulet",            quantite: "700 g, haché" },
+      { id: "carotte",           quantite: "1 grosse" },
+      { id: "oignon",            quantite: "1" },
+      { id: "champignon-de-paris", quantite: "1" },
+      { id: "oignon-nouveau",    quantite: "quelques tiges (farce + sauce)" },
+      { id: "gingembre",         quantite: "1 c. à café" },
+      { id: "ail",               quantite: "1 c. à café" },
+      { id: "sauce-huitre",      quantite: "3 c. à soupe" },
+      { id: "sauce-soja",        quantite: "3 c. à soupe" },
+      { id: "feuilles-gyoza",    quantite: "autant que de farce" },
+      { id: "eau",               quantite: "un peu" },
+      { id: "huile",             quantite: "1 filet" },
+      { id: "sauce-soja-sucree", quantite: "6 c. à soupe (sauce)" },
+      { id: "huile-pimentee",    quantite: "2 c. à soupe (sauce)" },
+      { id: "nokoss",          quantite: "1 c. à café (sauce)" },
+      { id: "graines-sesame",    quantite: "1 pincée (sauce)" }
+    ],
+    ustensiles: ["rape", "planche", "couteau", "saladier", "cuillere", "assiette", "bol", "poele", "congelateur"],
+
+    etapes: [
+      // La farce
+      { type: "action",  ustensile: "rape", action: "Râper", fois: 2,
+        texte: "Râpe la carotte, puis l'oignon." },
+      { type: "action",  ustensile: "planche", action: "Couper", fois: 2,
+        texte: "Émince le champignon et cisèle les oignons nouveaux. Garde-en un peu pour la sauce." },
+      { type: "ajouter", ustensile: "saladier", ingredient: "poulet",
+        texte: "Mets le poulet haché dans le saladier." },
+      { type: "ajouter", ustensile: "saladier", ingredient: "carotte",
+        texte: "Ajoute la carotte râpée…" },
+      { type: "ajouter", ustensile: "saladier", ingredient: "oignon",
+        texte: "…l'oignon râpé…" },
+      { type: "ajouter", ustensile: "saladier", ingredient: "champignon-de-paris",
+        texte: "…le champignon…" },
+      { type: "ajouter", ustensile: "saladier", ingredient: "oignon-nouveau",
+        texte: "…et les oignons nouveaux." },
+      { type: "ajouter", ustensile: "saladier", ingredient: "gingembre",
+        texte: "Ajoute 1 c. à café de gingembre." },
+      { type: "ajouter", ustensile: "saladier", ingredient: "ail",
+        texte: "Et 1 c. à café d'ail." },
+      { type: "ajouter", ustensile: "saladier", ingredient: "sauce-huitre",
+        texte: "Verse 3 c. à soupe de sauce huître…" },
+      { type: "ajouter", ustensile: "saladier", ingredient: "sauce-soja",
+        texte: "…et 3 c. à soupe de sauce soja." },
+      { type: "action",  ustensile: "saladier", action: "Mélanger", fois: 6,
+        texte: "Mélange bien toute la farce." },
+
+      // Le pliage
+      { type: "ajouter", ustensile: "assiette", ingredient: "feuilles-gyoza",
+        texte: "Pose une feuille de gyoza et dépose une petite quantité de farce au centre." },
+      { type: "ajouter", ustensile: "assiette", ingredient: "eau",
+        texte: "Humidifie les bords de la feuille avec un peu d'eau." },
+      { type: "action",  ustensile: "assiette", action: "Plier", fois: 10,
+        texte: "Referme en portefeuille. Un tap par gyoza, et continue jusqu'à ce qu'il n'y ait plus de farce !" },
+
+      // La sauce
+      { type: "ajouter", ustensile: "bol", ingredient: "sauce-soja-sucree",
+        texte: "Prépare la sauce : 6 c. à soupe de soja sucrée dans un bol…" },
+      { type: "ajouter", ustensile: "bol", ingredient: "huile-pimentee",
+        texte: "…2 c. à soupe d'huile pimentée…" },
+      { type: "ajouter", ustensile: "bol", ingredient: "nokoss",
+        texte: "…1 c. à café de nokoss…" },
+      { type: "ajouter", ustensile: "bol", ingredient: "graines-sesame",
+        texte: "…des graines de sésame…" },
+      { type: "ajouter", ustensile: "bol", ingredient: "oignon-nouveau",
+        texte: "…et le reste des oignons nouveaux." },
+      { type: "action",  ustensile: "bol", action: "Mélanger", fois: 3,
+        texte: "Mélange la sauce." },
+
+      // La cuisson
+      { type: "ajouter", ustensile: "poele", ingredient: "huile",
+        texte: "Verse un filet d'huile dans la poêle, à feu moyen-vif." },
+      { type: "action",  ustensile: "poele", action: "Mettre", fois: 1,
+        texte: "Dépose les gyozas que tu vas manger dans la poêle, à plat." },
+      { type: "cuisson", ustensile: "poele", duree: 180,
+        texte: "Fais-les dorer jusqu'à ce que le dessous soit bien doré." },
+      { type: "ajouter", ustensile: "poele", ingredient: "eau",
+        texte: "Ajoute un peu d'eau dans la poêle. Attention, ça crépite !" },
+      { type: "action",  ustensile: "poele", action: "Couvrir", fois: 1,
+        texte: "Couvre tout de suite." },
+      { type: "cuisson", ustensile: "poele", duree: 300,
+        texte: "Laisse finir la cuisson à la vapeur, environ 5 min." },
+      { type: "action",  ustensile: "assiette", action: "Servir", fois: 1,
+        texte: "Sers les gyozas avec la sauce. Bon appétit !" },
+
+      // La conservation
+      { type: "action",  ustensile: "congelateur", action: "Mettre", fois: 1,
+        texte: "Mets les gyozas pas cuisinés au congélateur pour les conserver." }
+    ]
+  },
+
+  {
     id: "croque-monsieur",
     nom: "Croque-monsieur",
     categorie: "sale",
