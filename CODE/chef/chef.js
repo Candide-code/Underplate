@@ -74,6 +74,21 @@ function chefActuel() {
   return { ...CHEF_PAR_DEFAUT, ...joueur.chef };
 }
 
+// Un chef venu d'un AUTRE joueur (serveur) : on ne garde que des valeurs
+// qui existent dans CHOIX_CHEF, sinon celle par défaut. Ses valeurs finissent
+// dans des adresses d'images (htmlChef) : rien d'inattendu ne doit y passer.
+function chefVerifie(chefInconnu) {
+  const chef = { ...CHEF_PAR_DEFAUT };
+  const source = chefInconnu || {};
+  for (const cle of Object.keys(CHOIX_CHEF)) {
+    if (CHOIX_CHEF[cle].some(choix => choix.id === source[cle])) {
+      chef[cle] = source[cle];
+    }
+  }
+  chef.pseudo = String(source.pseudo || "");
+  return chef;
+}
+
 // Choisit le mot accordé selon le genre du chef :
 // accord("fort", "forte") → "fort" pour un chef, "forte" pour une cheffe
 function accord(masculin, feminin) {

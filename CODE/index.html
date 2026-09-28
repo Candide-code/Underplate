@@ -494,6 +494,22 @@
       <button id="rejoindre-brigade-valider" class="bouton bouton-large">REJOINDRE ▶</button>
       <button id="rejoindre-brigade-annuler" class="bouton-lien">Annuler</button>
     </dialog>
+  </main>
+
+  <!-- ===== UNE BRIGADE : son classement (brigade/classement.js) ===== -->
+  <main id="ecran-une-brigade" class="ecran" hidden>
+    <div class="barre-haut">
+      <button id="une-brigade-retour" class="bouton-icone" aria-label="Retour à mes brigades">←</button>
+      <h2 id="une-brigade-nom"></h2>
+    </div>
+    <p class="brigade-code">Code : <strong id="une-brigade-code"></strong></p>
+
+    <p class="titre-grille">Classement</p>
+    <p id="classement-message" class="brigade-message" hidden></p>
+    <!-- <ol> = liste numérotée ; une ligne par membre, créées par classement.js -->
+    <ol id="classement" class="classement"></ol>
+
+    <button id="une-brigade-quitter" class="bouton-lien">Quitter la brigade</button>
 
     <dialog id="fenetre-quitter-brigade" class="dialogue fenetre">
       <p id="quitter-brigade-question"></p>
@@ -528,6 +544,7 @@
   <script src="fin-recette/fin-recette.js"></script>
   <script src="grimoire/grimoire.js"></script>
   <script src="brigade/brigade.js"></script>
+  <script src="brigade/classement.js"></script>
   <script src="chef/creation.js"></script>
   <script src="custom/assistant.js"></script>
   <script src="nouveautes/nouveautes.js"></script>

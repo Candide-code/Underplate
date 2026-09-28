@@ -9,9 +9,22 @@
   color: var(--texte-2);
 }
 
-/* Une carte par brigade, toutes de la même taille */
+/* Une carte par brigade, toutes de la même taille. C'est un bouton :
+   on remet le texte à gauche et la police du jeu. */
 .carte-brigade {
+  display: block;
+  width: 100%;
   margin-top: 16px;
+  text-align: left;
+  font-family: var(--police-texte);
+  font-size: 18px;
+  color: var(--texte);
+  cursor: pointer;
+}
+
+.carte-brigade:active {
+  transform: translate(var(--pixel), var(--pixel));
+  box-shadow: none;
 }
 
 .carte-brigade h3 {
@@ -33,11 +46,6 @@
 
 .brigade-membres {
   color: var(--texte-2);
-}
-
-/* « Quitter » : discret, en bas à droite de la carte */
-.carte-brigade .bouton-lien {
-  margin: 8px 0 0 auto;
 }
 
 /* La petite phrase sur ce qui est partagé */
@@ -62,4 +70,74 @@
 #creer-brigade-message:not(:empty),
 #rejoindre-brigade-message:not(:empty) {
   margin-top: 12px;
+}
+
+/* ---------- Une brigade : le classement ---------- */
+
+#une-brigade-nom {
+  overflow-wrap: anywhere;
+}
+
+.classement {
+  margin: 0;
+  padding: 0;
+  list-style: none; /* les numéros sont dessinés par nous (.rang) */
+}
+
+/* Une ligne : rang | perso | pseudo, niveau, XP */
+.ligne-classement {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* Ma ligne : bordure orange, pour me repérer tout de suite */
+.ligne-classement.moi {
+  border-color: var(--accent);
+}
+
+/* Le rang : une petite case carrée */
+.rang {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--police-titre);
+  font-size: 14px;
+  border: var(--pixel) solid var(--texte);
+}
+
+/* Le podium, aux couleurs des rangs de maîtrise (texte sombre : lisible
+   dans les deux thèmes) */
+.ligne-classement:nth-child(-n+3) .rang { color: #1a1c2c; }
+.ligne-classement:nth-child(1) .rang { background: var(--or); }
+.ligne-classement:nth-child(2) .rang { background: var(--argent); }
+.ligne-classement:nth-child(3) .rang { background: var(--bronze); }
+
+.classement-infos {
+  flex: 1;
+  min-width: 0;
+}
+
+.classement-infos p {
+  margin: 0;
+}
+
+.classement-nom {
+  font-family: var(--police-titre);
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.classement-niveau {
+  font-size: 15px;
+  color: var(--texte-2);
+}
+
+.classement-xp {
+  font-size: 15px;
 }

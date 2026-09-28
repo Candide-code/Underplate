@@ -1,7 +1,8 @@
 // ==========================================================
 // BRIGADE : les groupes entre potes
 // Créer une brigade (le serveur lui donne un code de partage),
-// en rejoindre une avec un code, voir ses brigades, en quitter une.
+// en rejoindre une avec un code, voir ses brigades.
+// Toucher une brigade ouvre son écran : classement, quitter (classement.js).
 // Tout passe par le serveur (serveur/connexion.js) : sans réseau,
 // l'écran affiche un message au lieu des brigades.
 // Guide : guidelines/serveur-supabase.md
@@ -12,11 +13,6 @@ const messageBrigade = document.getElementById("brigade-message");
 
 const fenetreCreer = document.getElementById("fenetre-creer-brigade");
 const fenetreRejoindre = document.getElementById("fenetre-rejoindre-brigade");
-const fenetreQuitterBrigade = document.getElementById("fenetre-quitter-brigade");
-
-// La brigade qu'on s'apprête à quitter (le temps de la confirmation)
-let brigadeAQuitter = null;
-
 // Un code de 6 caractères s'affiche en 2 blocs, plus facile à dicter : K7P M4Q
 function codeLisible(code) {
   return code.slice(0, 3) + " " + code.slice(3);
@@ -72,23 +68,24 @@ async function chargerBrigades() {
   }
 }
 
-// Une carte par brigade : nom, code de partage, nombre de membres, « Quitter »
+// Une carte par brigade : nom, code de partage, nombre de membres.
+// C'est un bouton : on la touche pour ouvrir le classement.
 function afficherListeBrigades(brigades) {
   listeBrigades.innerHTML = "";
 
   for (const brigade of brigades) {
     const nombre = brigade.membres[0].count;
-    const carte = document.createElement("div");
+    const carte = document.createElement("button");
     carte.className = "carte-brigade cadre";
     // echapper() : le nom vient d'un autre joueur, on ne le laisse
     // jamais passer pour du HTML (voir base/outils.js)
     carte.innerHTML = `
-      <h3>${echapper(brigade.nom)}</h3>
+      <h3>${echapper(brigade.nom)} ▶</h3>
       <p class="brigade-code">Code : <strong>${codeLisible(brigade.code)}</strong></p>
-      <p class="brigade-membres">${nombre} membre${nombre > 1 ? "s" : ""}</p>
-      <button class="bouton-lien">Quitter</button>`;
+      <p class="brigade-membres">${nombre} membre${nombre > 1 ? "s" : ""}</p>`;
 
-    carte.querySelector(".bouton-lien").addEventListener("click", () => ouvrirQuitter(brigade));
+    // ouvrirBrigade est dans classement.js, chargé après ce fichier
+    carte.addEventListener("click", () => ouvrirBrigade(brigade));
     listeBrigades.appendChild(carte);
   }
 }
@@ -178,39 +175,5 @@ boutonRejoindre.addEventListener("click", async () => {
       ? "* Code inconnu. Vérifie-le : il n'y a ni O, ni I, ni 0, ni 1."
       : "* Le serveur ne répond pas. Réessaie dans un moment.";
     boutonRejoindre.disabled = false;
-  }
-});
-
-// ---------- Quitter une brigade ----------
-
-function ouvrirQuitter(brigade) {
-  brigadeAQuitter = brigade;
-  // textContent : le nom est affiché tel quel, jamais comme du HTML
-  document.getElementById("quitter-brigade-question").textContent =
-    "* Quitter la brigade « " + brigade.nom + " » ?";
-  fenetreQuitterBrigade.showModal();
-}
-
-document.getElementById("quitter-brigade-non").addEventListener("click", () => fenetreQuitterBrigade.close());
-
-document.getElementById("quitter-brigade-oui").addEventListener("click", async () => {
-  fenetreQuitterBrigade.close();
-  if (!serveurJoignable()) {
-    afficherMessageBrigade("Pas de réseau… Réessaie plus tard.");
-    return;
-  }
-  try {
-    const id = await compteDuJoueur();
-    // Les règles du serveur ne me laissent supprimer QUE ma propre ligne
-    const { error } = await serveur
-      .from("membres")
-      .delete()
-      .eq("groupe_id", brigadeAQuitter.id)
-      .eq("joueur_id", id);
-    if (error) throw error;
-    chargerBrigades();
-  } catch (erreur) {
-    console.warn("Impossible de quitter :", erreur);
-    afficherMessageBrigade("Le serveur ne répond pas. Réessaie dans un moment.");
   }
 });
