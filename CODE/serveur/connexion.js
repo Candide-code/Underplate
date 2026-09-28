@@ -24,10 +24,22 @@ function serveurJoignable() {
 let envoiEnCours = false;
 let envoiARefaire = false;
 
+// La demande de compte en cours (null = aucune)
+let compteEnCours = null;
+
 // Renvoie l'identifiant du compte, en le créant s'il n'existe pas encore.
+// Si deux parties du jeu le demandent en même temps (envoi + brigade…),
+// elles attendent la MÊME réponse : on ne crée jamais 2 comptes d'un coup.
+function compteDuJoueur() {
+  if (!compteEnCours) {
+    compteEnCours = trouverOuCreerCompte().finally(() => { compteEnCours = null; });
+  }
+  return compteEnCours;
+}
+
 // La clé du compte est gardée par supabase-js dans le localStorage :
 // à la prochaine ouverture, on retrouve le même compte.
-async function compteDuJoueur() {
+async function trouverOuCreerCompte() {
   const { data } = await serveur.auth.getSession();
   if (data.session) return data.session.user.id;
 
@@ -69,6 +81,9 @@ async function envoyerAuServeur() {
     ]);
     if (profil.error) throw profil.error;
     if (sauvegarde.error) throw sauvegarde.error;
+
+    // Mes recettes CUSTOM, pour les membres de mes brigades (brigade/partage.js)
+    await partagerMesRecettes(id);
   } catch (erreur) {
     // Pas grave : la partie est dans le téléphone, on réessaiera
     console.warn("Envoi au serveur impossible :", erreur);
@@ -78,5 +93,21 @@ async function envoyerAuServeur() {
       envoiARefaire = false;
       envoyerAuServeur();
     }
+  }
+}
+
+// Publie des événements dans le fil d'activité des brigades.
+// activites = [{ type: "recette", donnees: { … } }, …] (voir fin-recette.js)
+// joueur_id n'est pas envoyé : le serveur met celui du compte connecté.
+async function publierActivites(activites) {
+  if (!serveurJoignable() || !joueur.chef || activites.length === 0) return;
+  try {
+    await compteDuJoueur();
+    const { error } = await serveur.from("activites").insert(activites);
+    if (error) throw error;
+  } catch (erreur) {
+    // Pour l'instant, un événement qui n'a pas pu partir est perdu
+    // (la file d'attente hors ligne, c'est l'étape 9)
+    console.warn("Activité non publiée :", erreur);
   }
 }

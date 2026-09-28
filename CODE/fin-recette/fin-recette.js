@@ -32,6 +32,23 @@ document.getElementById("fin-jai-fini").addEventListener("click", () => {
   const rangAvant = rangDeMaitrise(foisAvant);
   const rangApres = rangDeMaitrise(foisAvant + 1);
 
+  // Le fil d'activité des brigades (publierActivites : serveur/connexion.js)
+  const genre = chefActuel().genre;
+  const activites = [
+    { type: "recette", donnees: { recette: recette.id, nom: recette.nom, premiere: foisAvant === 0 } }
+  ];
+  if (apres.niveau > avant.niveau) {
+    activites.push({ type: "niveau", donnees: { niveau: apres.niveau } });
+  }
+  if (titreDuNiveau(apres.niveau, genre) !== titreDuNiveau(avant.niveau, genre)) {
+    activites.push({ type: "titre", donnees: { niveau: apres.niveau } });
+  }
+  // Bronze = 1re fois : déjà dit par « a cuisiné … pour la 1re fois »
+  if (rangApres !== rangAvant && rangApres.nom !== "Bronze") {
+    activites.push({ type: "rang", donnees: { recette: recette.id, nom: recette.nom, rang: rangApres.nom } });
+  }
+  publierActivites(activites);
+
   // 2. XP gagnée (avec le détail des bonus) + barre qui se remplit grâce à la transition CSS
   const bonus = [];
   if (foisAvant === 0) bonus.push("découverte ×1,5");
@@ -52,7 +69,6 @@ document.getElementById("fin-jai-fini").addEventListener("click", () => {
   if (apres.niveau > avant.niveau) {
     lignes.push("* Tu te sens plus " + accord("fort", "forte") + ". Niveau " + apres.niveau + " !");
     // Le titre ne change qu'à certains paliers (5, 10, 18…) : on ne l'annonce que s'il change
-    const genre = chefActuel().genre;
     const titreAvant = titreDuNiveau(avant.niveau, genre);
     const titreApres = titreDuNiveau(apres.niveau, genre);
     if (titreApres !== titreAvant) {

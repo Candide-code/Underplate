@@ -509,6 +509,16 @@
     <!-- <ol> = liste numérotée ; une ligne par membre, créées par classement.js -->
     <ol id="classement" class="classement"></ol>
 
+    <p class="titre-grille titre-fil">Leurs recettes</p>
+    <p id="partagees-message" class="brigade-message" hidden></p>
+    <!-- Les recettes CUSTOM des autres membres, créées par partage.js -->
+    <ul id="recettes-partagees" class="recettes-partagees"></ul>
+
+    <p class="titre-grille titre-fil">Activité</p>
+    <p id="fil-message" class="brigade-message" hidden></p>
+    <!-- Les derniers événements des membres, créés par classement.js -->
+    <ul id="fil-activite" class="fil-activite"></ul>
+
     <button id="une-brigade-quitter" class="bouton-lien">Quitter la brigade</button>
 
     <dialog id="fenetre-quitter-brigade" class="dialogue fenetre">
@@ -545,6 +555,7 @@
   <script src="grimoire/grimoire.js"></script>
   <script src="brigade/brigade.js"></script>
   <script src="brigade/classement.js"></script>
+  <script src="brigade/partage.js"></script>
   <script src="chef/creation.js"></script>
   <script src="custom/assistant.js"></script>
   <script src="nouveautes/nouveautes.js"></script>

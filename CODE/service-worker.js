@@ -35,7 +35,7 @@ const FICHIERS_DE_BASE = [
   "cuisine/cuisine.css", "cuisine/cuisine.js",
   "fin-recette/fin-recette.css", "fin-recette/fin-recette.js",
   "grimoire/grimoire.css", "grimoire/grimoire.js",
-  "brigade/brigade.css", "brigade/brigade.js", "brigade/classement.js",
+  "brigade/brigade.css", "brigade/brigade.js", "brigade/classement.js", "brigade/partage.js",
   "nouveautes/nouveautes.js",
   "assets/icones/icone-192.png", "assets/icones/icone-512.png"
 ];
