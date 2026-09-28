@@ -36,9 +36,11 @@
 
   <!-- ===== 1. ACCUEIL ===== -->
   <main id="ecran-accueil" class="ecran">
-    <header class="entete-joueur cadre">
+    <!-- Tout le bandeau se touche : il ouvre l'écran « Ton chef »
+         (apparence, code de récupération). Voir chef/creation.js -->
+    <header id="entete-joueur" class="entete-joueur cadre">
       <!-- Le perso du joueur, dessiné par afficherEntete() (joueur.js).
-           C'est un bouton : on le touche pour modifier son chef. -->
+           C'est un bouton (pour le clavier), mais tout le bandeau réagit. -->
       <button id="entete-avatar" class="bouton-avatar" aria-label="Modifier mon chef"></button>
       <div class="entete-infos">
         <h2 id="entete-nom">Chef</h2>
@@ -90,6 +92,26 @@
     </div>
 
     <button id="creation-valider" class="bouton bouton-large">C'EST PARTI ▶</button>
+
+    <!-- Code de récupération (serveur/recuperation.js) -->
+    <button id="creation-mon-code" class="bouton-lien">Mon code de récupération</button>
+    <button id="creation-recuperer" class="bouton-lien">J'ai déjà une partie</button>
+
+    <dialog id="fenetre-mon-code" class="dialogue fenetre">
+      <p>* Ton code de récupération :</p>
+      <p id="mon-code" class="code-recuperation"></p>
+      <p id="mon-code-explication"></p>
+      <button id="mon-code-ok" class="bouton bouton-large">C'EST NOTÉ ▶</button>
+    </dialog>
+
+    <dialog id="fenetre-recuperer" class="dialogue fenetre">
+      <p>* Tu as déjà une partie sur un autre téléphone ?</p>
+      <p>* Tape ton code de récupération.</p>
+      <input id="code-saisi" class="champ-texte champ-code" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="TOQUE-XXXX-XXXX">
+      <p id="recuperer-message"></p>
+      <button id="recuperer-valider" class="bouton bouton-large">RÉCUPÉRER ▶</button>
+      <button id="recuperer-annuler" class="bouton-lien">Annuler</button>
+    </dialog>
   </main>
 
   <!-- ===== RECETTES et CUSTOM : on choisit d'abord salé ou sucré =====
@@ -453,6 +475,7 @@
   <script src="lib/supabase.js"></script>
   <script src="serveur/config.js"></script>
   <script src="serveur/connexion.js"></script>
+  <script src="serveur/recuperation.js"></script>
   <script src="accueil/accueil.js"></script>
   <script src="preparation/preparation.js"></script>
   <script src="cuisine/cuisine.js"></script>

@@ -29,7 +29,7 @@ const FICHIERS_DE_BASE = [
   "chef/chef.css", "chef/chef.js", "chef/creation.js",
   "custom/custom.css", "custom/custom.js", "custom/assistant.js",
   "sauvegarde/sauvegarde.js",
-  "lib/supabase.js", "serveur/config.js", "serveur/connexion.js",
+  "lib/supabase.js", "serveur/config.js", "serveur/connexion.js", "serveur/recuperation.js",
   "accueil/accueil.css", "accueil/accueil.js",
   "preparation/preparation.css", "preparation/preparation.js",
   "cuisine/cuisine.css", "cuisine/cuisine.js",

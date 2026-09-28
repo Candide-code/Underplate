@@ -1,6 +1,6 @@
 // ==========================================================
 // CRÉE TON CHEF : choisir son pseudo et l'apparence de son perso
-// S'ouvre au premier lancement, puis quand on touche l'avatar.
+// S'ouvre au premier lancement, puis quand on touche le bandeau du haut.
 // ==========================================================
 
 // Les lignes de réglage, dans l'ordre de l'écran.
@@ -33,6 +33,11 @@ function ouvrirCreation() {
   document.getElementById("creation-retour").hidden = premiereFois;
   document.getElementById("creation-valider").textContent = premiereFois ? "C'EST PARTI ▶" : "VALIDER ▶";
   document.getElementById("creation-pseudo").value = brouillon.pseudo;
+
+  // Les liens du code de récupération (serveur/recuperation.js)
+  document.getElementById("creation-mon-code").hidden = premiereFois;
+  document.getElementById("creation-recuperer").textContent =
+    premiereFois ? "J'ai déjà une partie" : "Récupérer une autre partie";
 
   construireLignes();
   afficherApercu();
@@ -109,5 +114,6 @@ document.getElementById("creation-valider").addEventListener("click", () => {
 // ← : on annule, le chef reste comme avant
 document.getElementById("creation-retour").addEventListener("click", afficherAccueil);
 
-// Toucher l'avatar de l'en-tête ouvre l'écran pour modifier son chef
-document.getElementById("entete-avatar").addEventListener("click", ouvrirCreation);
+// Toucher le bandeau du haut (avatar, pseudo, XP) ouvre l'écran pour modifier son chef.
+// Un clic sur l'avatar « remonte » jusqu'au bandeau : un seul écouteur suffit.
+document.getElementById("entete-joueur").addEventListener("click", ouvrirCreation);
