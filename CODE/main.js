@@ -27,6 +27,10 @@ if (joueur.chef === null) {
 // Des recettes arrivées avec une mise à jour ? On les annonce (nouveautes.js)
 verifierNouveautes();
 
+// Compte sur le serveur : créé s'il n'existe pas, et la partie y est copiée
+// (serveur/connexion.js). Le jeu n'attend pas la réponse pour s'afficher.
+envoyerAuServeur();
+
 // App installable : on lance le service worker (jeu hors ligne + mises à jour).
 // Il ne marche que sur un vrai serveur (GitHub Pages), pas en ouvrant le fichier.
 if ("serviceWorker" in navigator && location.protocol !== "file:") {

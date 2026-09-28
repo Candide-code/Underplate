@@ -88,18 +88,34 @@ let contexteAudio = null; // la "table de mixage" du navigateur
 // un geste du joueur. On appelle donc cette fonction dans un clic,
 // pour que le bip puisse sonner plus tard, tout seul.
 function preparerSon() {
+  // iPhone : par défaut, le son d'une page est coupé en mode silencieux.
+  // "playback" = un son qu'on veut entendre (comme une vidéo) : il passe quand même.
+  if (navigator.audioSession) {
+    try { navigator.audioSession.type = "playback"; } catch (erreur) {}
+  }
   if (!contexteAudio) {
     const Contexte = window.AudioContext || window.webkitAudioContext;
     if (!Contexte) return; // navigateur trop ancien : pas de son
     contexteAudio = new Contexte();
   }
-  if (contexteAudio.state === "suspended") contexteAudio.resume();
+  if (contexteAudio.state !== "running") contexteAudio.resume();
+
+  // iPhone : le son n'est vraiment débloqué qu'une fois qu'un son a été joué
+  // pendant le clic. On joue donc un son muet, très court.
+  const muet = contexteAudio.createBufferSource();
+  muet.buffer = contexteAudio.createBuffer(1, 1, 22050);
+  muet.connect(contexteAudio.destination);
+  muet.start(0);
 }
 
-// 2 séries de 3 bips, comme un minuteur de cuisine
-function jouerBip() {
+// 2 séries de 3 bips, comme un minuteur de cuisine.
+// "async" : après une longue attente, l'iPhone a pu mettre le son en pause
+// ("suspended" ou "interrupted") : on attend qu'il se réveille avant de biper.
+async function jouerBip() {
   if (!contexteAudio) return;
-  if (contexteAudio.state === "suspended") contexteAudio.resume();
+  if (contexteAudio.state !== "running") {
+    try { await contexteAudio.resume(); } catch (erreur) {}
+  }
 
   const maintenant = contexteAudio.currentTime; // l'horloge du son, en secondes
   for (let serie = 0; serie < 2; serie++) {

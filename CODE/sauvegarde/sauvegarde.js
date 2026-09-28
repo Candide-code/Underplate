@@ -14,6 +14,8 @@ function sauvegarder() {
   } catch (erreur) {
     console.warn("Sauvegarde impossible :", erreur);
   }
+  // Une copie part sur le serveur (serveur/connexion.js), sans attendre la réponse
+  envoyerAuServeur();
 }
 
 function charger() {
