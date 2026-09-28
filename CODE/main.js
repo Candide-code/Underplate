@@ -9,6 +9,7 @@
 if (new URLSearchParams(location.search).has("reset")) {
   try {
     localStorage.removeItem(CLE_SAUVEGARDE);
+    localStorage.removeItem(CLE_FILE_ACTIVITES); // les événements pas encore partis
     history.replaceState(null, "", location.pathname);
   } catch (erreur) {
     console.warn("Reset impossible :", erreur);

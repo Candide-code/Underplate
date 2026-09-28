@@ -128,6 +128,8 @@ async function recupererPartie() {
     // On remplace la sauvegarde du téléphone, puis on relance le jeu :
     // au démarrage, charger() la lit comme n'importe quelle sauvegarde.
     localStorage.setItem(CLE_SAUVEGARDE, JSON.stringify(data));
+    // Les événements pas encore partis appartenaient à la partie remplacée
+    localStorage.removeItem(CLE_FILE_ACTIVITES);
     garderCode(codeBienEcrit(code));
     location.reload();
   } catch (erreur) {

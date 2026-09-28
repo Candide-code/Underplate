@@ -2,8 +2,8 @@
 // CONNEXION : le compte anonyme, et la copie de la partie sur le serveur
 // Le jeu reste « local d'abord » : la sauvegarde du téléphone est la
 // référence. Le serveur en reçoit une copie après chaque sauvegarde.
-// Sans réseau, rien ne part : on réessaie à la prochaine sauvegarde
-// ou à la prochaine ouverture du jeu.
+// Sans réseau, rien ne part : on réessaie au retour du réseau, à la
+// prochaine sauvegarde ou à la prochaine ouverture du jeu.
 // Guide : guidelines/serveur-supabase.md (partie 7)
 // ==========================================================
 
@@ -84,6 +84,9 @@ async function envoyerAuServeur() {
 
     // Mes recettes CUSTOM, pour les membres de mes brigades (brigade/partage.js)
     await partagerMesRecettes(id);
+
+    // Le profil est bien sur le serveur : les événements en attente peuvent partir
+    envoyerFileActivites();
   } catch (erreur) {
     // Pas grave : la partie est dans le téléphone, on réessaiera
     console.warn("Envoi au serveur impossible :", erreur);
@@ -96,18 +99,66 @@ async function envoyerAuServeur() {
   }
 }
 
-// Publie des événements dans le fil d'activité des brigades.
-// activites = [{ type: "recette", donnees: { … } }, …] (voir fin-recette.js)
-// joueur_id n'est pas envoyé : le serveur met celui du compte connecté.
-async function publierActivites(activites) {
-  if (!serveurJoignable() || !joueur.chef || activites.length === 0) return;
+// ---------- Le fil d'activité, avec sa file d'attente ----------
+// Un événement (« a cuisiné… ») passe TOUJOURS par une file d'attente
+// rangée dans le téléphone. On essaie de l'envoyer tout de suite ; sans
+// réseau, il attend, et part au retour du réseau ou à la prochaine ouverture.
+// Chaque événement garde sa vraie date : dans le fil, il se range au bon moment.
+
+const CLE_FILE_ACTIVITES = "underplate-file-activites";
+const TAILLE_MAX_FILE = 100; // au-delà, les plus anciens sont oubliés
+
+function lireFileActivites() {
   try {
-    await compteDuJoueur();
-    const { error } = await serveur.from("activites").insert(activites);
-    if (error) throw error;
+    return JSON.parse(localStorage.getItem(CLE_FILE_ACTIVITES)) || [];
   } catch (erreur) {
-    // Pour l'instant, un événement qui n'a pas pu partir est perdu
-    // (la file d'attente hors ligne, c'est l'étape 9)
-    console.warn("Activité non publiée :", erreur);
+    return [];
   }
 }
+
+function ecrireFileActivites(file) {
+  try {
+    if (file.length === 0) localStorage.removeItem(CLE_FILE_ACTIVITES);
+    else localStorage.setItem(CLE_FILE_ACTIVITES, JSON.stringify(file));
+  } catch (erreur) {
+    console.warn("File d'attente non gardée :", erreur);
+  }
+}
+
+// activites = [{ type: "recette", donnees: { … } }, …] (voir fin-recette.js)
+// joueur_id n'est pas envoyé : le serveur met celui du compte connecté.
+function publierActivites(activites) {
+  if (activites.length === 0) return;
+  const maintenant = new Date().toISOString();
+  const nouvelles = activites.map(activite => ({ ...activite, cree_le: maintenant }));
+  ecrireFileActivites(lireFileActivites().concat(nouvelles).slice(-TAILLE_MAX_FILE));
+  envoyerFileActivites();
+}
+
+// Un seul envoi de la file à la fois
+let fileEnCours = false;
+
+async function envoyerFileActivites() {
+  if (fileEnCours || !serveurJoignable() || !joueur.chef) return;
+  const file = lireFileActivites();
+  if (file.length === 0) return;
+
+  fileEnCours = true;
+  try {
+    await compteDuJoueur();
+    const { error } = await serveur.from("activites").insert(file);
+    if (error) throw error;
+    // On retire ce qui est parti. D'autres événements ont pu arriver
+    // pendant l'envoi (à la fin de la file) : on les garde.
+    ecrireFileActivites(lireFileActivites().slice(file.length));
+  } catch (erreur) {
+    // Pas grave : ils restent dans la file, on réessaiera
+    console.warn("Activités en attente :", erreur);
+  } finally {
+    fileEnCours = false;
+  }
+}
+
+// Le réseau revient (Wi-Fi retrouvé, mode avion coupé…) : on envoie
+// la partie, puis la file d'attente (voir la fin de envoyerAuServeur)
+window.addEventListener("online", () => envoyerAuServeur());
