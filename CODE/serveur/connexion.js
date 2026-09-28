@@ -14,6 +14,11 @@ const serveur = window.supabase
   ? supabase.createClient(SUPABASE_URL, SUPABASE_CLE_PUBLIQUE)
   : null;
 
+// Pas de bibliothèque ou pas de réseau : inutile d'essayer
+function serveurJoignable() {
+  return serveur !== null && navigator.onLine;
+}
+
 // Un seul envoi à la fois. Si on sauvegarde pendant un envoi,
 // on en refait un à la fin (avec la partie la plus récente).
 let envoiEnCours = false;
@@ -35,7 +40,7 @@ async function compteDuJoueur() {
 // Envoie le profil (ce que les groupes verront) et la sauvegarde complète (privée)
 async function envoyerAuServeur() {
   // Pas de serveur, pas de réseau, ou chef pas encore créé : rien à faire
-  if (!serveur || !navigator.onLine || !joueur.chef) return;
+  if (!serveurJoignable() || !joueur.chef) return;
 
   if (envoiEnCours) {
     envoiARefaire = true;

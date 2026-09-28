@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="fin-recette/fin-recette.css">
   <link rel="stylesheet" href="grimoire/grimoire.css">
   <link rel="stylesheet" href="custom/custom.css">
+  <link rel="stylesheet" href="brigade/brigade.css">
 </head>
 <body>
 
@@ -67,6 +68,10 @@
       <button id="menu-custom" class="bouton bouton-large bouton-menu">
         CUSTOM ▶
         <span class="menu-sous-titre">Tes propres recettes</span>
+      </button>
+      <button id="menu-brigade" class="bouton bouton-large bouton-menu">
+        BRIGADE ▶
+        <span class="menu-sous-titre">Cuisine avec tes potes</span>
       </button>
     </nav>
   </main>
@@ -457,6 +462,47 @@
     </div>
   </main>
 
+  <!-- ===== BRIGADE : les groupes entre potes (brigade/brigade.js) ===== -->
+  <main id="ecran-brigade" class="ecran" hidden>
+    <div class="barre-haut">
+      <button id="brigade-retour" class="bouton-icone" aria-label="Retour à l'accueil">←</button>
+      <h2>Brigade</h2>
+    </div>
+
+    <!-- Chargement, pas de réseau, pas encore de brigade… -->
+    <p id="brigade-message" class="brigade-message" hidden></p>
+    <!-- Une carte par brigade, créées par brigade.js -->
+    <div id="liste-brigades"></div>
+
+    <button id="brigade-creer" class="bouton bouton-large">CRÉER UNE BRIGADE ▶</button>
+    <button id="brigade-rejoindre" class="bouton bouton-large bouton-clair">REJOINDRE ▶</button>
+
+    <p class="brigade-info">Ton pseudo, ton perso, ton XP et tes recettes perso sont visibles par les membres de tes brigades. Rien d'autre.</p>
+
+    <dialog id="fenetre-creer-brigade" class="dialogue fenetre">
+      <p>* Comment s'appelle ta brigade ?</p>
+      <input id="nom-brigade" class="champ-texte" type="text" maxlength="30" autocomplete="off" placeholder="Ex. La coloc">
+      <p id="creer-brigade-message"></p>
+      <button id="creer-brigade-valider" class="bouton bouton-large">CRÉER ▶</button>
+      <button id="creer-brigade-annuler" class="bouton-lien">Annuler</button>
+    </dialog>
+
+    <dialog id="fenetre-rejoindre-brigade" class="dialogue fenetre">
+      <p>* Tape le code de la brigade que ton pote t'a donné.</p>
+      <input id="code-brigade" class="champ-texte champ-code-brigade" type="text" maxlength="10" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7P M4Q">
+      <p id="rejoindre-brigade-message"></p>
+      <button id="rejoindre-brigade-valider" class="bouton bouton-large">REJOINDRE ▶</button>
+      <button id="rejoindre-brigade-annuler" class="bouton-lien">Annuler</button>
+    </dialog>
+
+    <dialog id="fenetre-quitter-brigade" class="dialogue fenetre">
+      <p id="quitter-brigade-question"></p>
+      <p>* Tu pourras revenir avec son code.</p>
+      <button id="quitter-brigade-non" class="bouton bouton-large">RESTER ▶</button>
+      <button id="quitter-brigade-oui" class="bouton-lien">Quitter la brigade</button>
+    </dialog>
+  </main>
+
   <!-- Nouvelles recettes arrivées avec une mise à jour (rempli par nouveautes.js) -->
   <dialog id="fenetre-nouveautes" class="dialogue fenetre">
     <div id="nouveautes-texte"></div>
@@ -476,6 +522,7 @@
   <script src="serveur/config.js"></script>
   <script src="serveur/connexion.js"></script>
   <script src="serveur/recuperation.js"></script>
+  <script src="brigade/brigade.js"></script>
   <script src="accueil/accueil.js"></script>
   <script src="preparation/preparation.js"></script>
   <script src="cuisine/cuisine.js"></script>

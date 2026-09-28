@@ -1,5 +1,5 @@
 // ==========================================================
-// ACCUEIL : en-tête du joueur + menu (Recettes / Grimoire / Custom)
+// ACCUEIL : en-tête du joueur + menu (Recettes / Grimoire / Custom / Brigade)
 // RECETTES et CUSTOM : choix salé / sucré, puis une carte par recette
 // (les deux utilisent les mêmes écrans, voir "sourceChoisie")
 // ==========================================================
@@ -23,6 +23,8 @@ document.getElementById("menu-grimoire").addEventListener("click", () => {
   document.getElementById("recherche-grimoire").value = ""; // on rouvre le Grimoire sans recherche
   afficherGrimoire();
 });
+// Pareil pour afficherBrigade (brigade/brigade.js)
+document.getElementById("menu-brigade").addEventListener("click", () => afficherBrigade());
 
 // ---------- Salé ou sucré ? ----------
 

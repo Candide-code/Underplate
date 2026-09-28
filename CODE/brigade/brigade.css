@@ -1,0 +1,65 @@
+/* ==========================================================
+   BRIGADE : les groupes entre potes
+   ========================================================== */
+
+/* Chargement, pas de réseau, pas encore de brigade */
+.brigade-message {
+  margin: 16px 0;
+  text-align: center;
+  color: var(--texte-2);
+}
+
+/* Une carte par brigade, toutes de la même taille */
+.carte-brigade {
+  margin-top: 16px;
+}
+
+.carte-brigade h3 {
+  margin: 0 0 8px;
+  overflow-wrap: anywhere; /* un nom long passe à la ligne */
+}
+
+.carte-brigade p {
+  margin: 4px 0 0;
+}
+
+/* Le code de partage : bien visible, pour le dicter aux potes */
+.brigade-code strong {
+  font-family: var(--police-titre);
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+
+.brigade-membres {
+  color: var(--texte-2);
+}
+
+/* « Quitter » : discret, en bas à droite de la carte */
+.carte-brigade .bouton-lien {
+  margin: 8px 0 0 auto;
+}
+
+/* La petite phrase sur ce qui est partagé */
+.brigade-info {
+  margin-top: 24px;
+  font-size: 15px;
+  text-align: center;
+  color: var(--texte-2);
+}
+
+/* Les champs des fenêtres Créer / Rejoindre */
+.fenetre .champ-texte {
+  margin-top: 12px;
+}
+
+.champ-code-brigade {
+  font-family: var(--police-titre);
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+#creer-brigade-message:not(:empty),
+#rejoindre-brigade-message:not(:empty) {
+  margin-top: 12px;
+}

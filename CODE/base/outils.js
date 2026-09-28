@@ -23,6 +23,19 @@ function htmlSprite(sprite, lettre, description) {
   return `<span class="sprite sprite-temp" role="img" aria-label="${description}">${lettre}</span>`;
 }
 
+// Rend un texte sans danger avant de le mettre dans du HTML (innerHTML).
+// Indispensable pour tout ce qui vient d'un AUTRE joueur (pseudo, nom de
+// brigade…) : un nom comme <img onerror=…> lancerait du code chez tout le groupe.
+// Ici, < devient &lt; : il s'affiche comme un simple caractère.
+function echapper(texte) {
+  return String(texte)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // Mélange un tableau au hasard (utile pour le plateau d'ingrédients)
 function melanger(tableau) {
   const copie = [...tableau]; // on travaille sur une copie

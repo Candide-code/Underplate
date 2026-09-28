@@ -40,11 +40,6 @@ function codeBienEcrit(code) {
   return "TOQUE-" + secret.slice(0, 4) + "-" + secret.slice(4);
 }
 
-// Pas de bibliothèque ou pas de réseau : inutile d'essayer
-function serveurJoignable() {
-  return serveur !== null && navigator.onLine;
-}
-
 // ---------- Mon code ----------
 
 document.getElementById("creation-mon-code").addEventListener("click", ouvrirMonCode);
