@@ -38,6 +38,8 @@ function ouvrirCreation() {
   document.getElementById("creation-mon-code").hidden = premiereFois;
   document.getElementById("creation-recuperer").textContent =
     premiereFois ? "J'ai déjà une partie" : "Récupérer une autre partie";
+  // Supprimer son compte : seulement quand il y a un chef (serveur/suppression.js)
+  document.getElementById("creation-supprimer").hidden = premiereFois;
 
   construireLignes();
   afficherApercu();

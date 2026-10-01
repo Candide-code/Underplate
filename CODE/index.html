@@ -117,6 +117,17 @@
       <button id="recuperer-valider" class="bouton bouton-large">RÉCUPÉRER ▶</button>
       <button id="recuperer-annuler" class="bouton-lien">Annuler</button>
     </dialog>
+
+    <!-- Supprimer mon compte (serveur/suppression.js) -->
+    <button id="creation-supprimer" class="bouton-lien">Supprimer mon compte</button>
+
+    <dialog id="fenetre-supprimer-compte" class="dialogue fenetre">
+      <p id="supprimer-question"></p>
+      <p>* Toutes tes données vont être supprimées.</p>
+      <p id="supprimer-message"></p>
+      <button id="supprimer-non" class="bouton bouton-large">GARDER MON COMPTE ▶</button>
+      <button id="supprimer-oui" class="bouton-lien">Tout supprimer</button>
+    </dialog>
   </main>
 
   <!-- ===== RECETTES et CUSTOM : on choisit d'abord salé ou sucré =====
@@ -548,6 +559,7 @@
   <script src="serveur/config.js"></script>
   <script src="serveur/connexion.js"></script>
   <script src="serveur/recuperation.js"></script>
+  <script src="serveur/suppression.js"></script>
   <script src="accueil/accueil.js"></script>
   <script src="preparation/preparation.js"></script>
   <script src="cuisine/cuisine.js"></script>
