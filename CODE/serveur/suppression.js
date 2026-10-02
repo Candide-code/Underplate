@@ -1,7 +1,7 @@
 // ==========================================================
 // SUPPRIMER MON COMPTE (RGPD : droit à l'effacement)
 // 1. Le serveur efface tout ce qui appartient au joueur, puis son compte
-//    (fonction supprimer_mon_compte, fin de guidelines/serveur-supabase.sql).
+//    (fonction supprimer_mon_compte, fin de Serveur_sql/serveur-supabase.sql).
 // 2. On efface ensuite tout ce qui reste dans le téléphone, et le jeu
 //    redémarre comme au tout premier lancement (« Crée ton chef »).
 // La fenêtre est dans l'écran « Ton chef » (index.html).

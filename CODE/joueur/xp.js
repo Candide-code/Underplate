@@ -1,6 +1,6 @@
 // ==========================================================
 // FORMULES RPG : XP, niveaux, titres
-// (les règles sont dans guidelines/phase-0-cadrage.md)
+// (les règles sont dans guidelines/progression.md)
 // ==========================================================
 
 // XP de base selon la difficulté (index = nombre d'étoiles)
