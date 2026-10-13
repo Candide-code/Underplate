@@ -2,10 +2,11 @@
 // CODE DE RÉCUPÉRATION : retrouver sa partie sur un autre téléphone
 // - « Mon code » : le serveur crée un code (ex. TOQUE-7K2P-M4QX)
 //   et n'en garde que l'empreinte. Le téléphone le garde pour le remontrer.
-// - « J'ai déjà une partie » : on tape le code, le serveur « déménage »
-//   l'ancienne partie vers le compte de ce téléphone et nous la renvoie.
+// - « J'ai déjà une partie » : on tape le code, le serveur relie ce
+//   téléphone à la partie du code et nous la renvoie. Les autres
+//   appareils de la partie restent connectés.
 // Les deux fenêtres sont dans l'écran « Ton chef » (index.html).
-// Guide : guidelines/serveur-supabase.md (partie 7)
+// Guide : guidelines/serveur-supabase.md (parties 7 et 12)
 // ==========================================================
 
 // Le code est rangé à part, PAS dans l'objet joueur : sinon il partirait
@@ -116,7 +117,9 @@ async function recupererPartie() {
 
   try {
     await partieDuJoueur(); // crée le compte de CE téléphone s'il n'existe pas
-    const { data, error } = await serveur.rpc("recuperer_partie", { code_saisi: code });
+    // lier_appareil : ce téléphone rejoint la partie du code (SQL de l'étape 5).
+    // Son ancienne partie est effacée si plus aucun appareil ne la joue.
+    const { data, error } = await serveur.rpc("lier_appareil", { code_saisi: code });
     if (error) throw error;
 
     if (!data) {
