@@ -24,17 +24,36 @@ function serveurJoignable() {
 let envoiEnCours = false;
 let envoiARefaire = false;
 
-// La demande de compte en cours (null = aucune)
-let compteEnCours = null;
+// La demande en cours (null = aucune)
+let partieEnCours = null;
 
-// Renvoie l'identifiant du compte, en le créant s'il n'existe pas encore.
+// La partie déjà demandée au serveur, et le compte qui l'a demandée.
+// Un appareil change rarement de partie : inutile de redemander à chaque envoi.
+let partieConnue = null; // { compte: "…", partie: "…" }
+
+// Renvoie l'identifiant de la PARTIE du joueur (son chef, sa sauvegarde,
+// ses brigades…), en créant le compte de l'appareil s'il n'existe pas encore.
+// Compte ≠ partie : chaque appareil a son compte, et plusieurs appareils
+// pourront jouer la même partie (guide serveur, partie 12).
 // Si deux parties du jeu le demandent en même temps (envoi + brigade…),
 // elles attendent la MÊME réponse : on ne crée jamais 2 comptes d'un coup.
-function compteDuJoueur() {
-  if (!compteEnCours) {
-    compteEnCours = trouverOuCreerCompte().finally(() => { compteEnCours = null; });
+function partieDuJoueur() {
+  if (!partieEnCours) {
+    partieEnCours = trouverPartie().finally(() => { partieEnCours = null; });
   }
-  return compteEnCours;
+  return partieEnCours;
+}
+
+async function trouverPartie() {
+  const compte = await trouverOuCreerCompte();
+  if (partieConnue && partieConnue.compte === compte) return partieConnue.partie;
+
+  // ma_partie() : fonction du serveur, « quelle partie joue cet appareil ? »
+  const { data, error } = await serveur.rpc("ma_partie");
+  if (error) throw error;
+  if (!data) throw new Error("Cet appareil n'a pas de partie sur le serveur");
+  partieConnue = { compte: compte, partie: data };
+  return data;
 }
 
 // La clé du compte est gardée par supabase-js dans le localStorage :
@@ -61,20 +80,20 @@ async function envoyerAuServeur() {
   envoiEnCours = true;
 
   try {
-    const id = await compteDuJoueur();
+    const partie = await partieDuJoueur(); // le profil et la sauvegarde sont rangés sous la partie
     const maintenant = new Date().toISOString();
 
     // upsert = « crée la ligne si elle n'existe pas, sinon mets-la à jour »
     const [profil, sauvegarde] = await Promise.all([
       serveur.from("profils").upsert({
-        id: id,
+        id: partie,
         pseudo: joueur.chef.pseudo,
         chef: joueur.chef,
         xp: joueur.xp,
         mis_a_jour: maintenant
       }),
       serveur.from("sauvegardes").upsert({
-        id: id,
+        id: partie,
         donnees: joueur,
         mis_a_jour: maintenant
       })
@@ -83,7 +102,7 @@ async function envoyerAuServeur() {
     if (sauvegarde.error) throw sauvegarde.error;
 
     // Mes recettes CUSTOM, pour les membres de mes brigades (brigade/partage.js)
-    await partagerMesRecettes(id);
+    await partagerMesRecettes(partie);
 
     // Le profil est bien sur le serveur : les événements en attente peuvent partir
     envoyerFileActivites();
@@ -145,7 +164,7 @@ async function envoyerFileActivites() {
 
   fileEnCours = true;
   try {
-    await compteDuJoueur();
+    await partieDuJoueur();
     const { error } = await serveur.from("activites").insert(file);
     if (error) throw error;
     // On retire ce qui est parti. D'autres événements ont pu arriver

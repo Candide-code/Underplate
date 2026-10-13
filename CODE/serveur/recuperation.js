@@ -67,7 +67,7 @@ async function ouvrirMonCode() {
   texteCode.textContent = "…";
   explication.textContent = "* Je prépare ton code…";
   try {
-    await compteDuJoueur();
+    await partieDuJoueur();
     // rpc = appeler une fonction du serveur (ici, celle du SQL de l'étape 4)
     const { data, error } = await serveur.rpc("creer_code_recuperation");
     if (error) throw error;
@@ -115,7 +115,7 @@ async function recupererPartie() {
   messageRecuperer.textContent = "* Je cherche ta partie…";
 
   try {
-    await compteDuJoueur(); // le compte de CE téléphone (créé s'il n'existe pas)
+    await partieDuJoueur(); // crée le compte de CE téléphone s'il n'existe pas
     const { data, error } = await serveur.rpc("recuperer_partie", { code_saisi: code });
     if (error) throw error;
 

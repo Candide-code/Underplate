@@ -34,7 +34,7 @@ async function supprimerMonCompte() {
 
   try {
     // getSession lit seulement le téléphone : ça marche même sans réseau.
-    // On ne crée PAS de compte ici (pas de compteDuJoueur()).
+    // On ne crée PAS de compte ici (pas de partieDuJoueur()).
     const { data } = await serveur.auth.getSession();
 
     if (data.session) {

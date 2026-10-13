@@ -43,7 +43,7 @@ async function chargerClassement() {
   afficherMessageClassement("Chargement…");
 
   try {
-    const monId = await compteDuJoueur();
+    const monId = await partieDuJoueur();
     // Les membres de la brigade, et pour chacun son profil (pseudo, perso, XP).
     // profils(…) : la table membres pointe vers profils, le serveur les
     // assemble en une seule demande. Les règles RLS vérifient que je suis
@@ -196,7 +196,7 @@ document.getElementById("quitter-brigade-oui").addEventListener("click", async (
     return;
   }
   try {
-    const id = await compteDuJoueur();
+    const id = await partieDuJoueur();
     // Les règles du serveur ne me laissent supprimer QUE ma propre ligne
     const { error } = await serveur
       .from("membres")

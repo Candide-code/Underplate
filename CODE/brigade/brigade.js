@@ -49,7 +49,7 @@ async function chargerBrigades() {
   if (listeBrigades.innerHTML === "") afficherMessageBrigade("Chargement…");
 
   try {
-    await compteDuJoueur();
+    await partieDuJoueur();
     // Les règles du serveur ne renvoient QUE les brigades dont je suis membre.
     // membres(count) : le nombre de membres de chaque brigade, en une seule demande.
     const { data, error } = await serveur
@@ -120,7 +120,7 @@ boutonCreer.addEventListener("click", async () => {
   boutonCreer.disabled = true;
   messageCreer.textContent = "* Je prépare ta brigade…";
   try {
-    await compteDuJoueur();
+    await partieDuJoueur();
     // creer_groupe : la fonction du serveur (SQL de l'étape 2) tire le code
     const { error } = await serveur.rpc("creer_groupe", { nom_groupe: nom });
     if (error) throw error;
@@ -163,7 +163,7 @@ boutonRejoindre.addEventListener("click", async () => {
   boutonRejoindre.disabled = true;
   messageRejoindre.textContent = "* Je cherche la brigade…";
   try {
-    await compteDuJoueur();
+    await partieDuJoueur();
     // Le serveur accepte les minuscules et les espaces (« k7p m4q »)
     const { error } = await serveur.rpc("rejoindre_groupe", { code_saisi: code });
     if (error) throw error;
